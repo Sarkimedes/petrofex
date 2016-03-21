@@ -14,8 +14,9 @@ namespace PetrofexSystem.Pumps.UnitTests
         {
             var customerGenerator = new FakeCustomerGenerator();
             var server = new FakeServer();
-            var pump = new Pump(server, customerGenerator);
-            
+            var fuelPricesServer = new FakePriceServer();
+            var pump = new Pump(server, customerGenerator, fuelPricesServer);
+
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
 
             Assert.IsTrue(server.ActivationRequested);
@@ -26,7 +27,8 @@ namespace PetrofexSystem.Pumps.UnitTests
         {
             var customerGenerator = new FakeCustomerGenerator();
             var server = new FakeServer();
-            var pump = new Pump(server, customerGenerator);
+            var fuelPricesServer = new FakePriceServer();
+            var pump = new Pump(server, customerGenerator, fuelPricesServer);
 
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
 
@@ -39,7 +41,8 @@ namespace PetrofexSystem.Pumps.UnitTests
         {
             var customerGenerator = new FakeCustomerGenerator();
             var server = new FakeServer();
-            var pump = new Pump(server, customerGenerator);
+            var fuelPricesServer = new FakePriceServer();
+            var pump = new Pump(server, customerGenerator, fuelPricesServer);
 
             customerGenerator.InvokeCustomerReady(null);
         }
@@ -49,7 +52,8 @@ namespace PetrofexSystem.Pumps.UnitTests
         {
             var customerGenerator = new FakeCustomerGenerator();
             var server = new FakeServer();
-            var pump = new Pump(server, customerGenerator);
+            var fuelPricesServer = new FakePriceServer();
+            var pump = new Pump(server, customerGenerator, fuelPricesServer);
 
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
             pump.Activate();
@@ -68,7 +72,8 @@ namespace PetrofexSystem.Pumps.UnitTests
         {
             var customerGenerator = new FakeCustomerGenerator();
             var server = new FakeServer();
-            var pump = new Pump(server, customerGenerator);
+            var fuelPricesServer = new FakePriceServer();
+            var pump = new Pump(server, customerGenerator, fuelPricesServer);
 
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
             pump.Activate();
@@ -81,13 +86,42 @@ namespace PetrofexSystem.Pumps.UnitTests
         {
             var customerGenerator = new FakeCustomerGenerator();
             var server = new FakeServer();
-            var pump = new Pump(server, customerGenerator);
+            var fuelPricesServer = new FakePriceServer();
+            var pump = new Pump(server, customerGenerator, fuelPricesServer);
 
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
             pump.Activate();
             customerGenerator.InvokePumpProgress(new PumpProgressEventArgs(1));
 
             Assert.AreEqual(new FuelTransaction() {FuelType = FuelType.Diesel, Total = 1}, pump.CurrentTransaction);
+        }
+
+        [TestMethod]
+        public void Activate_WithActiveFuelPriceServer_GetsFuelPrices()
+        {
+            var customerGenerator = new FakeCustomerGenerator();
+            var server = new FakeServer();
+            var priceServer = new FakePriceServer();
+            var pump = new Pump(server, customerGenerator, priceServer);
+
+            customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Hydrogen));
+            pump.Activate();
+            customerGenerator.InvokePumpProgress(new PumpProgressEventArgs(1));
+
+            var expectedTransaction = new FuelTransaction()
+            {
+                FuelType = FuelType.Hydrogen,
+                Total = priceServer.GetFuelPrices()[FuelType.Hydrogen]
+            };
+            Assert.AreEqual(
+                expectedTransaction,
+                pump.CurrentTransaction,
+                string.Format("Fuel type: {0} | Total: {1} did not match Fuel type: {2} | Total {3}",
+                expectedTransaction.FuelType.ToString(),
+                expectedTransaction.Total,
+                pump.CurrentTransaction.FuelType.ToString(),
+                pump.CurrentTransaction.Total
+                ));
         }
     }
 }
