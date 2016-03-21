@@ -6,7 +6,7 @@ using PumpLibrary;
 
 namespace PetrofexSystem
 {
-    public class FuelTransaction
+    public struct FuelTransaction
     {
         /// <summary>
         /// The type of fuel dispensed in the transaction.

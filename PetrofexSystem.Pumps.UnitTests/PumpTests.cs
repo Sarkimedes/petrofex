@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PumpLibrary;
 
@@ -41,6 +42,52 @@ namespace PetrofexSystem.Pumps.UnitTests
             var pump = new Pump(server, customerGenerator);
 
             customerGenerator.InvokeCustomerReady(null);
+        }
+
+        [TestMethod]
+        public void Activate_WithValidTransaction_SetsCurrentTransactionToNextTransaction()
+        {
+            var customerGenerator = new FakeCustomerGenerator();
+            var server = new FakeServer();
+            var pump = new Pump(server, customerGenerator);
+
+            customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
+            pump.Activate();
+
+            var currentTransaction = pump.CurrentTransaction;
+            var expectedTransaction = new FuelTransaction()
+            {
+                FuelType = FuelType.Diesel,
+                Total = 0
+            };
+            Assert.AreEqual(expectedTransaction, currentTransaction);
+        }
+
+        [TestMethod]
+        public void Activate_WithValidTransaction_ActivatesPump()
+        {
+            var customerGenerator = new FakeCustomerGenerator();
+            var server = new FakeServer();
+            var pump = new Pump(server, customerGenerator);
+
+            customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
+            pump.Activate();
+
+            Assert.IsTrue(customerGenerator.IsPumpActive);
+        }
+
+        [TestMethod]
+        public void PumpProgress_AfterActivation_IncrementsCurrentTransaction()
+        {
+            var customerGenerator = new FakeCustomerGenerator();
+            var server = new FakeServer();
+            var pump = new Pump(server, customerGenerator);
+
+            customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
+            pump.Activate();
+            customerGenerator.InvokePumpProgress(new PumpProgressEventArgs(1));
+
+            Assert.AreEqual(new FuelTransaction() {FuelType = FuelType.Diesel, Total = 1}, pump.CurrentTransaction);
         }
     }
 }

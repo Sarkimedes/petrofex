@@ -20,9 +20,24 @@ namespace PetrofexSystem
             this._customerGenerator = customerGenerator;
             this._pumpId = Guid.NewGuid().ToString();
             this._customerGenerator.CustomerReady += CustomerGeneratorOnCustomerReady;
+            this._customerGenerator.PumpProgress += CustomerGeneratorOnPumpProgress;
+        }
+
+        private void CustomerGeneratorOnPumpProgress(object sender, PumpProgressEventArgs pumpProgressEventArgs)
+        {
+            if (pumpProgressEventArgs == null)
+            {
+                throw new ArgumentNullException("pumpProgressEventArgs");
+            }
+            this.CurrentTransaction = new FuelTransaction()
+            {
+                FuelType = CurrentTransaction.FuelType,
+                Total = CurrentTransaction.Total + pumpProgressEventArgs.LitresPumped
+            };
         }
 
         internal FuelTransaction NextTransaction { get; private set; }
+        public FuelTransaction CurrentTransaction { get; private set; }
 
         private void CustomerGeneratorOnCustomerReady(object sender, CustomerReadyEventArgs customerReadyEventArgs)
         {
@@ -37,6 +52,12 @@ namespace PetrofexSystem
                 Total = 0
             };
             this._pumpActivationServer.RequestActivation(this.PumpId);
+        }
+
+        public void Activate()
+        {
+            this.CurrentTransaction = this.NextTransaction;
+            this._customerGenerator.ActivatePump();
         }
     }
 }
