@@ -31,5 +31,16 @@ namespace PetrofexSystem.Pumps.UnitTests
 
             Assert.AreEqual(pump.NextTransaction.FuelType, FuelType.Diesel);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CustomerReady_WithNoEventArgs_ThrowsArgumentNullException()
+        {
+            var customerGenerator = new FakeCustomerGenerator();
+            var server = new FakeServer();
+            var pump = new Pump(server, customerGenerator);
+
+            customerGenerator.InvokeCustomerReady(null);
+        }
     }
 }

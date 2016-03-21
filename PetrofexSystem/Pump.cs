@@ -8,7 +8,7 @@ namespace PetrofexSystem
 {
     public class Pump
     {
-        private string _pumpId;
+        private readonly string _pumpId;
         private readonly IPumpActivationServer _pumpActivationServer;
         private readonly ICustomerGenerator _customerGenerator;
 
@@ -26,6 +26,11 @@ namespace PetrofexSystem
 
         private void CustomerGeneratorOnCustomerReady(object sender, CustomerReadyEventArgs customerReadyEventArgs)
         {
+            if (customerReadyEventArgs == null)
+            {
+                throw new ArgumentNullException("customerReadyEventArgs");
+            }
+
             this.NextTransaction = new FuelTransaction()
             {
                 FuelType = customerReadyEventArgs.SelectedFuel,
