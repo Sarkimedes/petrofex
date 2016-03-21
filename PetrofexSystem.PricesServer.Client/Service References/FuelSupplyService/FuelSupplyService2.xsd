@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/PetroFexHQ.Services" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/PetroFexHQ.Services" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://08346.net.dcs.hull.ac.uk/services/FuelSupplyService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="FuelPriceQuote">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="QuoteDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="QuotePrices" nillable="true" type="tns:ArrayOfFuelPrice" />
+      <xs:element minOccurs="0" name="QuoteReference" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FuelPriceQuote" nillable="true" type="tns:FuelPriceQuote" />
+  <xs:complexType name="ArrayOfFuelPrice">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FuelPrice" nillable="true" type="tns:FuelPrice" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFuelPrice" nillable="true" type="tns:ArrayOfFuelPrice" />
+  <xs:complexType name="FuelPrice">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Price" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FuelPrice" nillable="true" type="tns:FuelPrice" />
+  <xs:complexType name="FuelPurchaseOrder">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FuelType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OrderReference" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Quantity" type="xs:double" />
+      <xs:element minOccurs="0" name="QuoteReference" type="ser:guid" />
+      <xs:element minOccurs="0" name="StationId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FuelPurchaseOrder" nillable="true" type="tns:FuelPurchaseOrder" />
+  <xs:complexType name="FuelPurchaseConfirmation">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FuelType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OrderReference" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Quantity" type="xs:double" />
+      <xs:element minOccurs="0" name="TotalPrice" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FuelPurchaseConfirmation" nillable="true" type="tns:FuelPurchaseConfirmation" />
+</xs:schema>
