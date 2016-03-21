@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Pumps", "PetrofexSystem\PetrofexSystem.Pumps.csproj", "{0CDE52B5-743B-4E80-9058-7E156604C21D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Pumps.UnitTests", "PetrofexSystem.Pumps.UnitTests\PetrofexSystem.Pumps.UnitTests.csproj", "{B3563632-4E8B-439A-B8F8-4A9C553BF00E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{0CDE52B5-743B-4E80-9058-7E156604C21D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CDE52B5-743B-4E80-9058-7E156604C21D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CDE52B5-743B-4E80-9058-7E156604C21D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3563632-4E8B-439A-B8F8-4A9C553BF00E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3563632-4E8B-439A-B8F8-4A9C553BF00E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3563632-4E8B-439A-B8F8-4A9C553BF00E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3563632-4E8B-439A-B8F8-4A9C553BF00E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
