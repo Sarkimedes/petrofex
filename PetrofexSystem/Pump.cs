@@ -12,27 +12,36 @@ namespace PetrofexSystem
         private readonly IPumpActivationServer _pumpActivationServer;
         private readonly ICustomerGenerator _customerGenerator;
         private readonly IFuelPricesServer _fuelPricesServer;
+        private readonly ITransactionServer _transactionServer;
 
         private IDictionary<FuelType, double> _fuelPrices;
 
         public string PumpId { get { return this._pumpId; } }
+        public FuelTransaction CurrentTransaction { get; private set; }
+
+        internal FuelTransaction NextTransaction { get; private set; }
 
         public Pump(
             IPumpActivationServer pumpActivationServer,
             ICustomerGenerator customerGenerator,
-            IFuelPricesServer fuelPricesServer)
+            IFuelPricesServer fuelPricesServer,
+            ITransactionServer transactionServer)
         {
             this._pumpActivationServer = pumpActivationServer;
             this._customerGenerator = customerGenerator;
             this._fuelPricesServer = fuelPricesServer;
+            this._transactionServer = transactionServer;
 
             this._pumpId = Guid.NewGuid().ToString();
             this._customerGenerator.CustomerReady += CustomerGeneratorOnCustomerReady;
             this._customerGenerator.PumpProgress += CustomerGeneratorOnPumpProgress;
+            this._customerGenerator.PumpingFinished += CustomerGeneratorOnPumpingFinished;
         }
 
-        internal FuelTransaction NextTransaction { get; private set; }
-        public FuelTransaction CurrentTransaction { get; private set; }
+        private void CustomerGeneratorOnPumpingFinished(object sender, EventArgs eventArgs)
+        {
+            this._transactionServer.SendFuelTransaction(this.CurrentTransaction);
+        }
 
         private void CustomerGeneratorOnCustomerReady(
             object sender,

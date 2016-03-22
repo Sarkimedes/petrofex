@@ -17,5 +17,10 @@ namespace PetrofexSystem
         /// The total amount of money spent on this transaction.
         /// </summary>
         public double Total { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("Fuel type: {0} | Total Spent: {1}", this.FuelType, this.Total);
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace PetrofexSystem
 {
     class CustomerGeneratorAdapter : ICustomerGenerator
     {
-        private CustomerGenerator _customerGenerator;
+        private readonly CustomerGenerator _customerGenerator;
 
         public CustomerGeneratorAdapter(CustomerGenerator customerGenerator)
         {
@@ -20,12 +20,13 @@ namespace PetrofexSystem
             add { this._customerGenerator.CustomerReady += value; }
             remove { this._customerGenerator.CustomerReady -= value; }
         }
-
+        
         public event CustomerGenerator.PumpProgressHandler PumpProgress
         {
             add { this._customerGenerator.PumpProgress += value; }
             remove { this._customerGenerator.PumpProgress -= value; }
         }
+
         public event CustomerGenerator.PumpingFinishedHandler PumpingFinished
         {
             add { this._customerGenerator.PumpingFinished += value; }

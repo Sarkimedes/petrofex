@@ -59,6 +59,7 @@
     <Compile Include="FakeCustomerGenerator.cs" />
     <Compile Include="FakePriceServer.cs" />
     <Compile Include="FakeServer.cs" />
+    <Compile Include="FakeTransactionServer.cs" />
     <Compile Include="PumpTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -15,7 +15,8 @@ namespace PetrofexSystem.Pumps.UnitTests
             var customerGenerator = new FakeCustomerGenerator();
             var server = new FakeServer();
             var fuelPricesServer = new FakePriceServer();
-            var pump = new Pump(server, customerGenerator, fuelPricesServer);
+            var transactionServer = new FakeTransactionServer();
+            var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer);
 
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
 
@@ -28,7 +29,8 @@ namespace PetrofexSystem.Pumps.UnitTests
             var customerGenerator = new FakeCustomerGenerator();
             var server = new FakeServer();
             var fuelPricesServer = new FakePriceServer();
-            var pump = new Pump(server, customerGenerator, fuelPricesServer);
+            var transactionServer = new FakeTransactionServer();
+            var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer);
 
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
 
@@ -42,7 +44,8 @@ namespace PetrofexSystem.Pumps.UnitTests
             var customerGenerator = new FakeCustomerGenerator();
             var server = new FakeServer();
             var fuelPricesServer = new FakePriceServer();
-            var pump = new Pump(server, customerGenerator, fuelPricesServer);
+            var transactionServer = new FakeTransactionServer();
+            var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer);
 
             customerGenerator.InvokeCustomerReady(null);
         }
@@ -53,7 +56,8 @@ namespace PetrofexSystem.Pumps.UnitTests
             var customerGenerator = new FakeCustomerGenerator();
             var server = new FakeServer();
             var fuelPricesServer = new FakePriceServer();
-            var pump = new Pump(server, customerGenerator, fuelPricesServer);
+            var transactionServer = new FakeTransactionServer();
+            var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer);
 
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
             pump.Activate();
@@ -73,7 +77,8 @@ namespace PetrofexSystem.Pumps.UnitTests
             var customerGenerator = new FakeCustomerGenerator();
             var server = new FakeServer();
             var fuelPricesServer = new FakePriceServer();
-            var pump = new Pump(server, customerGenerator, fuelPricesServer);
+            var transactionServer = new FakeTransactionServer();
+            var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer);
 
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
             pump.Activate();
@@ -87,7 +92,8 @@ namespace PetrofexSystem.Pumps.UnitTests
             var customerGenerator = new FakeCustomerGenerator();
             var server = new FakeServer();
             var fuelPricesServer = new FakePriceServer();
-            var pump = new Pump(server, customerGenerator, fuelPricesServer);
+            var transactionServer = new FakeTransactionServer();
+            var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer);
 
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
             pump.Activate();
@@ -102,7 +108,8 @@ namespace PetrofexSystem.Pumps.UnitTests
             var customerGenerator = new FakeCustomerGenerator();
             var server = new FakeServer();
             var priceServer = new FakePriceServer();
-            var pump = new Pump(server, customerGenerator, priceServer);
+            var transactionServer = new FakeTransactionServer();
+            var pump = new Pump(server, customerGenerator, priceServer, transactionServer);
 
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Hydrogen));
             pump.Activate();
@@ -122,6 +129,50 @@ namespace PetrofexSystem.Pumps.UnitTests
                 pump.CurrentTransaction.FuelType.ToString(),
                 pump.CurrentTransaction.Total
                 ));
+        }
+
+        [TestMethod]
+        public void PumpProgress_CalledTwice_IncrementsCurrentTransactionTwice()
+        {
+            var customerGenerator = new FakeCustomerGenerator();
+            var server = new FakeServer();
+            var priceServer = new FakePriceServer();
+            var transactionServer = new FakeTransactionServer();
+            var pump = new Pump(server, customerGenerator, priceServer, transactionServer);
+
+            customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Unleaded));
+            pump.Activate();
+            customerGenerator.InvokePumpProgress(new PumpProgressEventArgs(1));
+            customerGenerator.InvokePumpProgress(new PumpProgressEventArgs(2));
+
+            var expectedTransaction = new FuelTransaction()
+            {
+                FuelType = FuelType.Unleaded,
+                Total = 9
+            };
+            Assert.AreEqual(expectedTransaction, pump.CurrentTransaction);
+        }
+
+        [TestMethod]
+        public void PumpFinished_AfterPumpingFinished_SendsCurrentTransactionToServer()
+        {
+            var customerGenerator = new FakeCustomerGenerator();
+            var server = new FakeServer();
+            var priceServer = new FakePriceServer();
+            var transactionServer = new FakeTransactionServer();
+            var pump = new Pump(server, customerGenerator, priceServer, transactionServer);
+
+            customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
+            pump.Activate();
+            customerGenerator.InvokePumpProgress(new PumpProgressEventArgs(1));
+            customerGenerator.InvokePumpingFinished(null);
+
+            var expectedTransaction = new FuelTransaction()
+            {
+                FuelType = FuelType.Diesel,
+                Total = 1
+            };
+            Assert.AreEqual(expectedTransaction, transactionServer.LastTransaction);
         }
     }
 }
