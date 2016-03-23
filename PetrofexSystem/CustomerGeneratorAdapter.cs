@@ -6,7 +6,7 @@ using PumpLibrary;
 
 namespace PetrofexSystem
 {
-    class CustomerGeneratorAdapter : ICustomerGenerator
+    public class CustomerGeneratorAdapter : ICustomerGenerator
     {
         private readonly CustomerGenerator _customerGenerator;
 

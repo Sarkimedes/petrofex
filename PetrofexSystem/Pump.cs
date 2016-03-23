@@ -13,12 +13,10 @@ namespace PetrofexSystem
         private readonly ICustomerGenerator _customerGenerator;
         private readonly IFuelPricesServer _fuelPricesServer;
         private readonly ITransactionServer _transactionServer;
-
         private IDictionary<FuelType, double> _fuelPrices;
 
         public string PumpId { get { return this._pumpId; } }
         public FuelTransaction CurrentTransaction { get; private set; }
-
         internal FuelTransaction NextTransaction { get; private set; }
 
         public Pump(
