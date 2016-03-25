@@ -16,6 +16,7 @@ namespace PetrofexSystem
         private IDictionary<FuelType, double> _fuelPrices;
 
         public string PumpId { get { return this._pumpId; } }
+
         public FuelTransaction CurrentTransaction { get; private set; }
         internal FuelTransaction NextTransaction { get; private set; }
 
@@ -36,10 +37,15 @@ namespace PetrofexSystem
             this._customerGenerator.PumpingFinished += CustomerGeneratorOnPumpingFinished;
         }
 
-        private void CustomerGeneratorOnPumpingFinished(object sender, EventArgs eventArgs)
+        public void Activate()
         {
-            this._transactionServer.SendFuelTransaction(this.CurrentTransaction);
+            this._fuelPrices = this._fuelPricesServer.GetFuelPrices();
+            this.CurrentTransaction = this.NextTransaction;
+            this._customerGenerator.ActivatePump();
+            this.IsActive = true;
         }
+
+        public bool IsActive { get; private set; }
 
         private void CustomerGeneratorOnCustomerReady(
             object sender,
@@ -66,10 +72,10 @@ namespace PetrofexSystem
             {
                 throw new ArgumentNullException("pumpProgressEventArgs");
             }
-            var increment = 
-                this._fuelPrices[CurrentTransaction.FuelType]*
+            var increment =
+                this._fuelPrices[CurrentTransaction.FuelType] *
                 pumpProgressEventArgs.LitresPumped;
-            
+
             this.CurrentTransaction = new FuelTransaction()
             {
                 FuelType = CurrentTransaction.FuelType,
@@ -77,11 +83,10 @@ namespace PetrofexSystem
             };
         }
 
-        public void Activate()
+        private void CustomerGeneratorOnPumpingFinished(object sender, EventArgs eventArgs)
         {
-            this._fuelPrices = this._fuelPricesServer.GetFuelPrices();
-            this.CurrentTransaction = this.NextTransaction;
-            this._customerGenerator.ActivatePump();
+            this._transactionServer.SendFuelTransaction(this.CurrentTransaction);
+            IsActive = false;
         }
     }
 }

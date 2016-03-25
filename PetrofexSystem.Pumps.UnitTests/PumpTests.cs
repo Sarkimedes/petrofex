@@ -13,7 +13,7 @@ namespace PetrofexSystem.Pumps.UnitTests
         public void Pump_CustomerWaiting_SendsActivateRequestToServer()
         {
             var customerGenerator = new FakeCustomerGenerator();
-            var server = new FakeServer();
+            var server = new FakeActivationServer();
             var fuelPricesServer = new FakePriceServer();
             var transactionServer = new FakeTransactionServer();
             var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer);
@@ -27,7 +27,7 @@ namespace PetrofexSystem.Pumps.UnitTests
         public void Pump_CustomerReady_SetsNextTransactionToSuppliedFuelType()
         {
             var customerGenerator = new FakeCustomerGenerator();
-            var server = new FakeServer();
+            var server = new FakeActivationServer();
             var fuelPricesServer = new FakePriceServer();
             var transactionServer = new FakeTransactionServer();
             var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer);
@@ -42,7 +42,7 @@ namespace PetrofexSystem.Pumps.UnitTests
         public void CustomerReady_WithNoEventArgs_ThrowsArgumentNullException()
         {
             var customerGenerator = new FakeCustomerGenerator();
-            var server = new FakeServer();
+            var server = new FakeActivationServer();
             var fuelPricesServer = new FakePriceServer();
             var transactionServer = new FakeTransactionServer();
             var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer);
@@ -54,7 +54,7 @@ namespace PetrofexSystem.Pumps.UnitTests
         public void Activate_WithValidTransaction_SetsCurrentTransactionToNextTransaction()
         {
             var customerGenerator = new FakeCustomerGenerator();
-            var server = new FakeServer();
+            var server = new FakeActivationServer();
             var fuelPricesServer = new FakePriceServer();
             var transactionServer = new FakeTransactionServer();
             var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer);
@@ -75,7 +75,7 @@ namespace PetrofexSystem.Pumps.UnitTests
         public void Activate_WithValidTransaction_ActivatesPump()
         {
             var customerGenerator = new FakeCustomerGenerator();
-            var server = new FakeServer();
+            var server = new FakeActivationServer();
             var fuelPricesServer = new FakePriceServer();
             var transactionServer = new FakeTransactionServer();
             var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer);
@@ -83,14 +83,14 @@ namespace PetrofexSystem.Pumps.UnitTests
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
             pump.Activate();
 
-            Assert.IsTrue(customerGenerator.IsPumpActive);
+            Assert.IsTrue(pump.IsActive);
         }
 
         [TestMethod]
         public void PumpProgress_AfterActivation_IncrementsCurrentTransaction()
         {
             var customerGenerator = new FakeCustomerGenerator();
-            var server = new FakeServer();
+            var server = new FakeActivationServer();
             var fuelPricesServer = new FakePriceServer();
             var transactionServer = new FakeTransactionServer();
             var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer);
@@ -106,7 +106,7 @@ namespace PetrofexSystem.Pumps.UnitTests
         public void Activate_WithActiveFuelPriceServer_GetsFuelPrices()
         {
             var customerGenerator = new FakeCustomerGenerator();
-            var server = new FakeServer();
+            var server = new FakeActivationServer();
             var priceServer = new FakePriceServer();
             var transactionServer = new FakeTransactionServer();
             var pump = new Pump(server, customerGenerator, priceServer, transactionServer);
@@ -135,7 +135,7 @@ namespace PetrofexSystem.Pumps.UnitTests
         public void PumpProgress_CalledTwice_IncrementsCurrentTransactionTwice()
         {
             var customerGenerator = new FakeCustomerGenerator();
-            var server = new FakeServer();
+            var server = new FakeActivationServer();
             var priceServer = new FakePriceServer();
             var transactionServer = new FakeTransactionServer();
             var pump = new Pump(server, customerGenerator, priceServer, transactionServer);
@@ -157,7 +157,7 @@ namespace PetrofexSystem.Pumps.UnitTests
         public void PumpFinished_AfterPumpingFinished_SendsCurrentTransactionToServer()
         {
             var customerGenerator = new FakeCustomerGenerator();
-            var server = new FakeServer();
+            var server = new FakeActivationServer();
             var priceServer = new FakePriceServer();
             var transactionServer = new FakeTransactionServer();
             var pump = new Pump(server, customerGenerator, priceServer, transactionServer);
@@ -174,5 +174,34 @@ namespace PetrofexSystem.Pumps.UnitTests
             };
             Assert.AreEqual(expectedTransaction, transactionServer.LastTransaction);
         }
+
+        [TestMethod]
+        public void PumpFinished_AfterPumpingFinished_MakesPumpGoInactiveAgain()
+        {
+            var customerGenerator = new FakeCustomerGenerator();
+            var pump = InitializePumpWithFakes(customerGenerator: customerGenerator);
+
+            customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
+            pump.Activate();
+            customerGenerator.InvokePumpProgress(new PumpProgressEventArgs(1));
+            customerGenerator.InvokePumpingFinished(null);
+
+            Assert.IsFalse(pump.IsActive, "Pump should not be reporting that it is still active after pumping has been finished.");
+        }
+
+        private Pump InitializePumpWithFakes(
+            IPumpActivationServer activationServer = null,
+            ICustomerGenerator customerGenerator = null,
+            IFuelPricesServer pricesServer = null,
+            ITransactionServer transactionServer = null)
+        {
+            var fakeActivationServer = activationServer ?? new FakeActivationServer();
+            var fakeCustomerGenerator = customerGenerator ?? new FakeCustomerGenerator();
+            var fakePriceServer = pricesServer ?? new FakePriceServer();
+            var fakeTransactionServer = transactionServer ?? new FakeTransactionServer();
+
+            return new Pump(fakeActivationServer, fakeCustomerGenerator, fakePriceServer, fakeTransactionServer);
+        }
+
     }
 }

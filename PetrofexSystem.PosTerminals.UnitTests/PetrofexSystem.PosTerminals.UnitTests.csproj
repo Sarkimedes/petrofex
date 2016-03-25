@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B3563632-4E8B-439A-B8F8-4A9C553BF00E}</ProjectGuid>
+    <ProjectGuid>{C343EB07-67E8-4DBD-9565-DD4D69431B60}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PetrofexSystem.Pumps.UnitTests</RootNamespace>
-    <AssemblyName>PetrofexSystem.Pumps.UnitTests</AssemblyName>
+    <RootNamespace>PetrofexSystem.PosTerminals.UnitTests</RootNamespace>
+    <AssemblyName>PetrofexSystem.PosTerminals.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PumpLibrary">
-      <HintPath>..\Libs\PumpLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -56,18 +53,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="FakeCustomerGenerator.cs" />
-    <Compile Include="FakePriceServer.cs" />
-    <Compile Include="FakeActivationServer.cs" />
-    <Compile Include="FakeTransactionServer.cs" />
-    <Compile Include="PumpTests.cs" />
+    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PetrofexSystem\PetrofexSystem.Pumps.csproj">
-      <Project>{0cde52b5-743b-4e80-9058-7e156604c21d}</Project>
-      <Name>PetrofexSystem.Pumps</Name>
-    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

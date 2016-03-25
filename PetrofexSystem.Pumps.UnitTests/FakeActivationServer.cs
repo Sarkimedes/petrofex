@@ -5,9 +5,9 @@ using System.Text;
 
 namespace PetrofexSystem.Pumps.UnitTests
 {
-    class FakeServer : IPumpActivationServer
+    class FakeActivationServer : IPumpActivationServer
     {
-        public FakeServer()
+        public FakeActivationServer()
         {
             this.ActivationRequested = false;
         }
