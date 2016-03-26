@@ -10,10 +10,12 @@ namespace PetrofexSystem.PosTerminals
     public class PumpManager
     {
         private readonly IDictionary<string, PumpStatus> _pumpStatuses;
+        private readonly IDictionary<string, Transaction> _lastTransactionsByPumpId;
 
         public PumpManager()
         {
             this._pumpStatuses = new Dictionary<string, PumpStatus>();
+            this._lastTransactionsByPumpId = new Dictionary<string, Transaction>();
         }
 
         public void HandleActivationRequest(string pumpId)
@@ -57,7 +59,26 @@ namespace PetrofexSystem.PosTerminals
                 throw new InvalidOperationException(string.Format("Cannot handle progress on non-existent pump with ID {0}", pumpId));
             }
 
-
+            if (this._lastTransactionsByPumpId.ContainsKey(pumpId))
+            {
+                this._lastTransactionsByPumpId[pumpId] = new Transaction()
+                {
+                    FuelType = fuelType,
+                    LitresPumped = litresPumped,
+                    TotalAmount = totalPaid,
+                    IsPaid = false
+                };
+            }
+            else
+            {
+                this._lastTransactionsByPumpId.Add(pumpId, new Transaction()
+                {
+                    FuelType = fuelType,
+                    LitresPumped = litresPumped,
+                    TotalAmount = totalPaid,
+                    IsPaid = false
+                });
+            }
         }
 
         public void HandleDeactivationRequest(string pumpId)
@@ -70,13 +91,7 @@ namespace PetrofexSystem.PosTerminals
 
         public Transaction GetLatestTransaction(string pumpId)
         {
-            return new Transaction()
-            {
-                FuelType = FuelType.Diesel,
-                IsPaid = false,
-                LitresPumped = 1,
-                TotalAmount = 1
-            };
+            return this._lastTransactionsByPumpId[pumpId];
         }
     }
 }

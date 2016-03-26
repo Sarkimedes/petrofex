@@ -69,6 +69,28 @@ namespace PetrofexSystem.PosTerminals.UnitTests
         }
 
         [TestMethod]
+        public void HandlePumpProgress_CalledTwiceOnActivePump_UpdatesTransactionForThatPump()
+        {
+            var pumpManager = new PumpManager();
+            var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
+            pumpManager.HandleActivationRequest(pumpId);
+            pumpManager.ActivatePump(pumpId);
+
+            pumpManager.HandlePumpProgress(pumpId, FuelType.Diesel, 1, 1);
+            pumpManager.HandlePumpProgress(pumpId, FuelType.Diesel, 2, 2);
+
+            var latestTransaction = pumpManager.GetLatestTransaction(pumpId);
+            var expectedTransaction = new Transaction()
+            {
+                FuelType = FuelType.Diesel,
+                LitresPumped = 2,
+                TotalAmount = 2,
+                IsPaid = false
+            };
+            Assert.AreEqual(expectedTransaction, latestTransaction);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void HandlePumpProgress_ForNonExistentPump_ThrowsException()
         {
