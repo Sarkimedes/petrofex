@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using PumpLibrary;
 
 namespace PetrofexSystem.PosTerminals
 {
@@ -45,7 +46,7 @@ namespace PetrofexSystem.PosTerminals
             return this._pumpStatuses.ContainsKey(pumpId) ? this._pumpStatuses[pumpId] : PumpStatus.Error;
         }
 
-        public void HandlePumpProgress(string pumpId)
+        public void HandlePumpProgress(string pumpId, FuelType fuelType, double litresPumped, double totalPaid)
         {
             if (this._pumpStatuses.ContainsKey(pumpId))
             {
@@ -55,6 +56,27 @@ namespace PetrofexSystem.PosTerminals
             {
                 throw new InvalidOperationException(string.Format("Cannot handle progress on non-existent pump with ID {0}", pumpId));
             }
+
+
+        }
+
+        public void HandleDeactivationRequest(string pumpId)
+        {
+            if (this._pumpStatuses.ContainsKey(pumpId))
+            {
+                this._pumpStatuses[pumpId] = PumpStatus.AwaitingPayment;
+            }
+        }
+
+        public Transaction GetLatestTransaction(string pumpId)
+        {
+            return new Transaction()
+            {
+                FuelType = FuelType.Diesel,
+                IsPaid = false,
+                LitresPumped = 1,
+                TotalAmount = 1
+            };
         }
     }
 }

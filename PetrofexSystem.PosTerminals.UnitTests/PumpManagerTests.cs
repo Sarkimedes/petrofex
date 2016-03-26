@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Reflection.Emit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PumpLibrary;
 
 namespace PetrofexSystem.PosTerminals.UnitTests
 {
@@ -39,9 +41,31 @@ namespace PetrofexSystem.PosTerminals.UnitTests
 
             pumpManager.HandleActivationRequest(pumpId);
             pumpManager.ActivatePump(pumpId);
-            pumpManager.HandlePumpProgress(pumpId);
+            pumpManager.HandlePumpProgress(pumpId, 0, 0, 0);
 
             Assert.AreEqual(PumpStatus.Active, pumpManager.GetPumpStatus(pumpId));
+        }
+
+        [TestMethod]
+        public void HandlePumpProgress_ForActivePump_UpdatesTransactionForThatPump()
+        {
+            var pumpManager = new PumpManager();
+            var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
+            pumpManager.HandleActivationRequest(pumpId);
+            pumpManager.ActivatePump(pumpId);
+
+            pumpManager.HandlePumpProgress(pumpId, FuelType.Diesel, 1, 1);
+
+            var transaction = pumpManager.GetLatestTransaction(pumpId);
+            Assert.AreEqual(
+                new Transaction()
+                {
+                    FuelType = FuelType.Diesel,
+                    LitresPumped = 1,
+                    TotalAmount = 1,
+                    IsPaid = false
+                },
+                transaction);
         }
 
         [TestMethod]
@@ -51,7 +75,22 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             var pumpManager = new PumpManager();
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
 
-            pumpManager.HandlePumpProgress(pumpId);
+            pumpManager.HandlePumpProgress(pumpId, 0, 0, 0);
         }
+
+        // Check that state changes to mark pump as awaiting payment when pumping is finished
+        [TestMethod]
+        public void HandleDeactivationRequest_ForActivePump_UpdatesPumpStatusToAwaitingPayment()
+        {
+            var pumpManager = new PumpManager();
+            var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
+            pumpManager.HandleActivationRequest(pumpId);
+            pumpManager.HandlePumpProgress(pumpId, 0, 0, 0);
+
+            pumpManager.HandleDeactivationRequest(pumpId);
+
+            Assert.AreEqual(PumpStatus.AwaitingPayment, pumpManager.GetPumpStatus(pumpId));
+        }
+
     }
 }
