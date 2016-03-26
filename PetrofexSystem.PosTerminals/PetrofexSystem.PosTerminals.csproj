@@ -42,8 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PumpManager.cs" />
     <Compile Include="PosTerminal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PumpStatus.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
