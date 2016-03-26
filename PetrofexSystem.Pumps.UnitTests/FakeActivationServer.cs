@@ -13,10 +13,16 @@ namespace PetrofexSystem.Pumps.UnitTests
         }
 
         public bool ActivationRequested { get; set; }
+        public bool PumpingFinished { get; set; }
 
         public void RequestActivation(string pumpId)
         {
             this.ActivationRequested = true;
+        }
+
+        public void RequestDeactivation(string pumpId)
+        {
+            this.PumpingFinished = true;
         }
     }
 }

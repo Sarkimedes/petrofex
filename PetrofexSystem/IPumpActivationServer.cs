@@ -15,5 +15,11 @@ namespace PetrofexSystem
         /// </summary>
         /// <param name="pumpId">The pump identifier.</param>
         void RequestActivation(string pumpId);
+
+        /// <summary>
+        /// Requests that the pump with the given ID is deactivated.
+        /// </summary>
+        /// <param name="pumpId">The pump identifier.</param>
+        void RequestDeactivation(string pumpId);
     }
 }

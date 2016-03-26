@@ -72,6 +72,7 @@ namespace PetrofexSystem
             {
                 throw new ArgumentNullException("pumpProgressEventArgs");
             }
+
             var increment =
                 this._fuelPrices[CurrentTransaction.FuelType] *
                 pumpProgressEventArgs.LitresPumped;
@@ -81,11 +82,13 @@ namespace PetrofexSystem
                 FuelType = CurrentTransaction.FuelType,
                 Total = CurrentTransaction.Total + increment
             };
+
+            this._transactionServer.SendFuelTransaction(this.CurrentTransaction);
         }
 
         private void CustomerGeneratorOnPumpingFinished(object sender, EventArgs eventArgs)
         {
-            this._transactionServer.SendFuelTransaction(this.CurrentTransaction);
+            this._pumpActivationServer.RequestDeactivation(this.PumpId);
             IsActive = false;
         }
     }

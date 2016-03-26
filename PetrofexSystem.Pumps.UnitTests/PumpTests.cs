@@ -154,28 +154,6 @@ namespace PetrofexSystem.Pumps.UnitTests
         }
 
         [TestMethod]
-        public void PumpFinished_AfterPumpingFinished_SendsCurrentTransactionToServer()
-        {
-            var customerGenerator = new FakeCustomerGenerator();
-            var server = new FakeActivationServer();
-            var priceServer = new FakePriceServer();
-            var transactionServer = new FakeTransactionServer();
-            var pump = new Pump(server, customerGenerator, priceServer, transactionServer);
-
-            customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
-            pump.Activate();
-            customerGenerator.InvokePumpProgress(new PumpProgressEventArgs(1));
-            customerGenerator.InvokePumpingFinished(null);
-
-            var expectedTransaction = new FuelTransaction()
-            {
-                FuelType = FuelType.Diesel,
-                Total = 1
-            };
-            Assert.AreEqual(expectedTransaction, transactionServer.LastTransaction);
-        }
-
-        [TestMethod]
         public void PumpFinished_AfterPumpingFinished_MakesPumpGoInactiveAgain()
         {
             var customerGenerator = new FakeCustomerGenerator();
@@ -189,7 +167,43 @@ namespace PetrofexSystem.Pumps.UnitTests
             Assert.IsFalse(pump.IsActive, "Pump should not be reporting that it is still active after pumping has been finished.");
         }
 
-        private Pump InitializePumpWithFakes(
+        [TestMethod]
+        public void PumpProgress_WithValidTransaction_SendsTransactionToServer()
+        {
+            var customerGenerator = new FakeCustomerGenerator();
+            var transactionServer = new FakeTransactionServer();
+            var pump = InitializePumpWithFakes(
+                customerGenerator: customerGenerator,
+                transactionServer: transactionServer);
+
+            customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
+            pump.Activate();
+            customerGenerator.InvokePumpProgress(new PumpProgressEventArgs(1));
+
+            var expectedTransaction = new FuelTransaction()
+            {
+                FuelType = FuelType.Diesel,
+                Total = 1
+            };
+            Assert.AreEqual(expectedTransaction, transactionServer.LastTransaction);
+        }
+
+        [TestMethod]
+        public void PumpingFinished_AfterPumping_SendsFinishedMessageToTheServer()
+        {
+            var customerGenerator = new FakeCustomerGenerator();
+            var activationServer = new FakeActivationServer();
+            var pump = InitializePumpWithFakes(customerGenerator: customerGenerator, activationServer: activationServer);
+
+            customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
+            pump.Activate();
+            customerGenerator.InvokePumpProgress(new PumpProgressEventArgs(1));
+            customerGenerator.InvokePumpingFinished(new EventArgs());
+
+            Assert.IsTrue(activationServer.PumpingFinished);
+        }
+
+        private static Pump InitializePumpWithFakes(
             IPumpActivationServer activationServer = null,
             ICustomerGenerator customerGenerator = null,
             IFuelPricesServer pricesServer = null,
