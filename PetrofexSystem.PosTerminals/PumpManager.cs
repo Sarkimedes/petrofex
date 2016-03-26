@@ -27,6 +27,15 @@ namespace PetrofexSystem.PosTerminals
             }
         }
 
+        public void ActivatePump(string pumpId)
+        {
+            var currentPumpStatus = this.GetPumpStatus(pumpId);
+            if (currentPumpStatus.Equals(PumpStatus.CustomerWaiting))
+            {
+                this._pumpStatuses[pumpId] = PumpStatus.ActivationPending;
+            }
+        }
+
         public PumpStatus GetPumpStatus(string pumpId)
         {
             return this._pumpStatuses.ContainsKey(pumpId) ? this._pumpStatuses[pumpId] : PumpStatus.Error;

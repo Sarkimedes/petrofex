@@ -9,12 +9,14 @@ namespace PetrofexSystem.PosTerminals.UnitTests
         [TestMethod]
         public void ActivatePump_WithPumpIdForInactivePump_ShouldActivatePump()
         {            
-            var posTerminal = new PosTerminal();
+            var pumpManager = new PumpManager();
+            var posTerminal = new PosTerminal(pumpManager);
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
 
+            pumpManager.HandleActivationRequest(pumpId);
             posTerminal.ActivatePump(pumpId);
 
-            Assert.IsTrue(PumpHasPendingActivation(posTerminal, pumpId));
+            Assert.AreEqual(PumpStatus.ActivationPending, pumpManager.GetPumpStatus(pumpId));
         }
 
 
@@ -22,52 +24,61 @@ namespace PetrofexSystem.PosTerminals.UnitTests
         [TestMethod]
         public void ActivatePump_WithPumpIdForActivePump_ShouldDoNothing()
         {
-            var posTerminal = new PosTerminal();
+            var pumpManager = new PumpManager();
+            var posTerminal = new PosTerminal(pumpManager);
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
 
+            pumpManager.HandleActivationRequest(pumpId);
             posTerminal.ActivatePump(pumpId);
             posTerminal.ActivatePump(pumpId);
 
-            Assert.IsTrue(posTerminal.PumpIsActive(pumpId));
+            Assert.AreEqual(PumpStatus.ActivationPending, posTerminal.GetPumpStatus(pumpId));
         }
 
         [TestMethod]
         public void ActivatePump_WithPumpIdActivatedAtADifferentTerminal_ShouldDoNothing()
         {
-            var posTerminal = new PosTerminal();
-            var posTerminal2 = new PosTerminal();
+            var pumpManager = new PumpManager();
+            var posTerminal = new PosTerminal(pumpManager);
+            var posTerminal2 = new PosTerminal(pumpManager);
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
 
+            pumpManager.HandleActivationRequest(pumpId);
             posTerminal.ActivatePump(pumpId);
             posTerminal2.ActivatePump(pumpId);
 
-            Assert.IsTrue(posTerminal.PumpIsActive(pumpId));
-            Assert.IsTrue(posTerminal2.PumpIsActive(pumpId));
+            Assert.AreEqual(PumpStatus.ActivationPending, posTerminal.GetPumpStatus(pumpId));
+            Assert.AreEqual(PumpStatus.ActivationPending, posTerminal2.GetPumpStatus(pumpId));
         }
 
         [TestMethod]
-        public void ActivatePump_WithPumpIdForInactivePump_ShouldOnlyActivateThePumpMatchingThatId()
+        public void ActivatePump_WithPumpIdForInactivePump_ShouldOnlyRequestToActivateThePumpMatchingThatId()
         {
-            var posTerminal = new PosTerminal();
+            var pumpManager = new PumpManager();
+            var posTerminal = new PosTerminal(pumpManager);
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
             var pumpId2 = new Guid(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2).ToString();
+            pumpManager.HandleActivationRequest(pumpId);
+            pumpManager.HandleActivationRequest(pumpId2);
 
             posTerminal.ActivatePump(pumpId);
 
-            Assert.IsTrue(posTerminal.PumpIsActive(pumpId));
-            Assert.IsFalse(posTerminal.PumpIsActive(pumpId2));
+            Assert.AreEqual(PumpStatus.ActivationPending, posTerminal.GetPumpStatus(pumpId));
+            Assert.AreEqual(PumpStatus.CustomerWaiting, posTerminal.GetPumpStatus(pumpId2));
         }
 
         [TestMethod]
-        public void PumpIsActive_WithPumpIdForPumpActivatedAtADifferentPosTerminal_ShouldReportThatThePumpWasActivated()
+        public void PumpIsActive_WithPumpIdForPumpActivatedAtADifferentPosTerminal_ShouldReportThatActivationWasRequestedForThePump()
         {
-            var posTerminal = new PosTerminal();
-            var posTerminal2 = new PosTerminal();
+            var pumpManager = new PumpManager();
+            var posTerminal = new PosTerminal(pumpManager);
+            var posTerminal2 = new PosTerminal(pumpManager);
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
+            pumpManager.HandleActivationRequest(pumpId);
 
             posTerminal.ActivatePump(pumpId);
             
-            Assert.IsTrue(posTerminal2.PumpIsActive(pumpId));
+            Assert.AreEqual(PumpStatus.ActivationPending, posTerminal2.GetPumpStatus(pumpId));
         }
 
         [TestMethod]
@@ -79,12 +90,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
 
             pumpManager.HandleActivationRequest(pumpId);
 
-            Assert.AreEqual(posTerminal.GetPumpStatus(pumpId), PumpStatus.CustomerWaiting);
-        }
-
-        private static bool PumpHasPendingActivation(PosTerminal posTerminal, string pumpId)
-        {
-            return posTerminal.PumpIsActive(pumpId);
+            Assert.AreEqual(PumpStatus.CustomerWaiting, posTerminal.GetPumpStatus(pumpId));
         }
     }
 }
