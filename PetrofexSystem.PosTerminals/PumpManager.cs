@@ -44,5 +44,13 @@ namespace PetrofexSystem.PosTerminals
         {
             return this._pumpStatuses.ContainsKey(pumpId) ? this._pumpStatuses[pumpId] : PumpStatus.Error;
         }
+
+        public void HandlePumpProgress(string pumpId)
+        {
+            if (this._pumpStatuses.ContainsKey(pumpId))
+            {
+                this._pumpStatuses[pumpId] = PumpStatus.Active;
+            }
+        }
     }
 }

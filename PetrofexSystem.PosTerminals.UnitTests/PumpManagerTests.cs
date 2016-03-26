@@ -29,5 +29,19 @@ namespace PetrofexSystem.PosTerminals.UnitTests
 
             Assert.AreEqual(PumpStatus.ActivationPending, pumpManager.GetPumpStatus(pumpId));
         }
+
+        // Test handling for progress update 
+        [TestMethod]
+        public void HandlePumpProgress_ForActivePump_UpdatesPumpStatusToActive()
+        {
+            var pumpManager = new PumpManager();
+            var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
+
+            pumpManager.HandleActivationRequest(pumpId);
+            pumpManager.ActivatePump(pumpId);
+            pumpManager.HandlePumpProgress(pumpId);
+
+            Assert.AreEqual(PumpStatus.Active, pumpManager.GetPumpStatus(pumpId));
+        }
     }
 }

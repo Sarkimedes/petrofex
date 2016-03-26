@@ -99,7 +99,7 @@ namespace PetrofexSystem.Pumps.UnitTests
             pump.Activate();
             customerGenerator.InvokePumpProgress(new PumpProgressEventArgs(1));
 
-            Assert.AreEqual(new FuelTransaction() {FuelType = FuelType.Diesel, Total = 1}, pump.CurrentTransaction);
+            Assert.AreEqual(new FuelTransaction() {PumpId = pump.PumpId, FuelType = FuelType.Diesel, LitresPumped = 1, Total = 1}, pump.CurrentTransaction);
         }
 
         [TestMethod]
@@ -117,18 +117,12 @@ namespace PetrofexSystem.Pumps.UnitTests
 
             var expectedTransaction = new FuelTransaction()
             {
+                PumpId = pump.PumpId,
                 FuelType = FuelType.Hydrogen,
+                LitresPumped = 1,
                 Total = priceServer.GetFuelPrices()[FuelType.Hydrogen]
             };
-            Assert.AreEqual(
-                expectedTransaction,
-                pump.CurrentTransaction,
-                string.Format("Fuel type: {0} | Total: {1} did not match Fuel type: {2} | Total {3}",
-                expectedTransaction.FuelType.ToString(),
-                expectedTransaction.Total,
-                pump.CurrentTransaction.FuelType.ToString(),
-                pump.CurrentTransaction.Total
-                ));
+            Assert.AreEqual(expectedTransaction, pump.CurrentTransaction);
         }
 
         [TestMethod]
@@ -147,7 +141,9 @@ namespace PetrofexSystem.Pumps.UnitTests
 
             var expectedTransaction = new FuelTransaction()
             {
+                PumpId = pump.PumpId,
                 FuelType = FuelType.Unleaded,
+                LitresPumped = 3,
                 Total = 9
             };
             Assert.AreEqual(expectedTransaction, pump.CurrentTransaction);
@@ -176,14 +172,16 @@ namespace PetrofexSystem.Pumps.UnitTests
                 customerGenerator: customerGenerator,
                 transactionServer: transactionServer);
 
-            customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
+            customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Unleaded));
             pump.Activate();
             customerGenerator.InvokePumpProgress(new PumpProgressEventArgs(1));
 
             var expectedTransaction = new FuelTransaction()
             {
-                FuelType = FuelType.Diesel,
-                Total = 1
+                PumpId = pump.PumpId,
+                FuelType = FuelType.Unleaded,
+                LitresPumped = 1,
+                Total = 3
             };
             Assert.AreEqual(expectedTransaction, transactionServer.LastTransaction);
         }

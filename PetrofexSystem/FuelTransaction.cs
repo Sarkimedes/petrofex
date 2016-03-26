@@ -9,16 +9,21 @@ namespace PetrofexSystem
     public struct FuelTransaction
     {
         /// <summary>
-        /// The type of fuel dispensed in the transaction.
-        /// </summary>
-        public FuelType FuelType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the litres pumped in this transaction.
+        /// Gets or sets the pump identifier.
         /// </summary>
         /// <value>
-        /// The litres pumped.
+        /// The pump identifier.
         /// </value>
+        public string PumpId { get; set; }
+
+        /// <summary>
+        /// The type of fuel dispensed in the transaction.
+        /// </summary>
+        /// <value>
+        /// The type of the fuel.
+        /// </value>
+        public FuelType FuelType { get; set; }
+
         public double LitresPumped { get; set; }
 
         /// <summary>
@@ -27,16 +32,14 @@ namespace PetrofexSystem
         public double Total { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is the last transaction for a particular customer.
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is last transaction; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsLastTransaction { get; set; }
-
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
-            return string.Format("Fuel type: {0} | Total Spent: {1}", this.FuelType, this.Total);
+            return string.Format("Pump Id: {3} | Fuel type: {0} | Litres pumped: {1} | Total Spent: {2}", this.FuelType, this.LitresPumped, this.Total, this.PumpId);
         }
     }
 }

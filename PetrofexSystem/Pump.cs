@@ -59,6 +59,7 @@ namespace PetrofexSystem
             this.NextTransaction = new FuelTransaction()
             {
                 FuelType = customerReadyEventArgs.SelectedFuel,
+                LitresPumped = 0,
                 Total = 0
             };
             this._pumpActivationServer.RequestActivation(this.PumpId);
@@ -79,7 +80,9 @@ namespace PetrofexSystem
 
             this.CurrentTransaction = new FuelTransaction()
             {
+                PumpId = this.PumpId,
                 FuelType = CurrentTransaction.FuelType,
+                LitresPumped = this.CurrentTransaction.LitresPumped + pumpProgressEventArgs.LitresPumped,
                 Total = CurrentTransaction.Total + increment
             };
 
