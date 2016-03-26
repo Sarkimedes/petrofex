@@ -43,5 +43,15 @@ namespace PetrofexSystem.PosTerminals.UnitTests
 
             Assert.AreEqual(PumpStatus.Active, pumpManager.GetPumpStatus(pumpId));
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void HandlePumpProgress_ForNonExistentPump_ThrowsException()
+        {
+            var pumpManager = new PumpManager();
+            var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
+
+            pumpManager.HandlePumpProgress(pumpId);
+        }
     }
 }

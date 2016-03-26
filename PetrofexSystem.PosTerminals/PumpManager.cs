@@ -51,6 +51,10 @@ namespace PetrofexSystem.PosTerminals
             {
                 this._pumpStatuses[pumpId] = PumpStatus.Active;
             }
+            else
+            {
+                throw new InvalidOperationException(string.Format("Cannot handle progress on non-existent pump with ID {0}", pumpId));
+            }
         }
     }
 }
