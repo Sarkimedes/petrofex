@@ -80,17 +80,5 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             
             Assert.AreEqual(PumpStatus.ActivationPending, posTerminal2.GetPumpStatus(pumpId));
         }
-
-        [TestMethod]
-        public void PumpIsActive_WithPumpIdForNewPump_ShouldReportThatPumpHasACustomerWaiting()
-        {
-            var pumpManager = new PumpManager();
-            var posTerminal = new PosTerminal(pumpManager);
-            var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
-
-            pumpManager.HandleActivationRequest(pumpId);
-
-            Assert.AreEqual(PumpStatus.CustomerWaiting, posTerminal.GetPumpStatus(pumpId));
-        }
     }
 }

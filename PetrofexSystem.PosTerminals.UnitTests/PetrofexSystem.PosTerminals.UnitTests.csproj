@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="PosTerminalTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PumpManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PetrofexSystem.PosTerminals\PetrofexSystem.PosTerminals.csproj">

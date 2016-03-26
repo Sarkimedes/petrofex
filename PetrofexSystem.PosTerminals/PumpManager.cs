@@ -19,7 +19,11 @@ namespace PetrofexSystem.PosTerminals
         {
             if (this._pumpStatuses.ContainsKey(pumpId))
             {
-                this._pumpStatuses[pumpId] = PumpStatus.CustomerWaiting;
+                var currentStatus = GetPumpStatus(pumpId);
+                if (currentStatus == PumpStatus.Inactive)
+                {
+                    this._pumpStatuses[pumpId] = PumpStatus.CustomerWaiting;
+                }
             }
             else
             {
