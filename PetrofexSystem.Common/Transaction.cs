@@ -56,7 +56,7 @@ namespace PetrofexSystem.Common
         /// </returns>
         public override string ToString()
         {
-            return string.Format("Pump Id: {3} | Fuel type: {0} | Litres pumped: {1} | Total Spent: {2}", this.FuelType, this.LitresPumped, this.TotalAmount, this.PumpId);
+            return string.Format("Pump Id: {3} | Fuel type: {0} | Litres pumped: {1} | Total Spent: {2} | Has been paid: {4}", this.FuelType, this.LitresPumped, this.TotalAmount, this.PumpId, this.IsPaid);
         }
     }
 }
