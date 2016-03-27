@@ -116,5 +116,36 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             Assert.AreEqual(PumpState.AwaitingPayment, pumpManager.GetPumpStatus(pumpId));
         }
 
+        // Check that state changes to mark pump as payment made when pumping is finished
+        [TestMethod]
+        public void MakePayment_ForActivePump_UpdatesPumpStatusToPaymentMade()
+        {
+            var pumpManager = new PumpManager();
+            var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
+            pumpManager.HandleActivationRequest(pumpId);
+            pumpManager.HandlePumpProgress(pumpId, 0, 0, 0);
+            pumpManager.HandleDeactivationRequest(pumpId);
+
+            pumpManager.SubmitPayment(pumpId);
+
+            Assert.AreEqual(PumpState.PaymentMade, pumpManager.GetPumpStatus(pumpId));
+        }
+
+        // Check that state changes to mark pump as inactive when payment is acknowledged
+        [TestMethod]
+        public void ReceivePaymentAcknowledged_ForActivePump_UpdatesPumpStatusToInactive()
+        {
+            var pumpManager = new PumpManager();
+            var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
+            pumpManager.HandleActivationRequest(pumpId);
+            pumpManager.HandlePumpProgress(pumpId, 0, 0, 0);
+            pumpManager.HandleDeactivationRequest(pumpId);
+            pumpManager.SubmitPayment(pumpId);
+
+            pumpManager.ReceivePaymentAcknowledged(pumpId);
+
+            Assert.AreEqual(PumpState.Inactive, pumpManager.GetPumpStatus(pumpId));
+        }
+
     }
 }

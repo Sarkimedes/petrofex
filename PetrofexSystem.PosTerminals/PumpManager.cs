@@ -2,36 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+using PetrofexSystem.Common;
 using PumpLibrary;
 
 namespace PetrofexSystem.PosTerminals
 {
     public class PumpManager
     {
-        private readonly IDictionary<string, PumpState> _pumpStatuses;
-        private readonly ICollection<Common.Transaction> _transactions;
+        private readonly IDictionary<string, PumpState> _pumpStates;
+        private readonly ICollection<Transaction> _transactions;
 
         public PumpManager()
         {
-            this._pumpStatuses = new Dictionary<string, PumpState>();
-            this._transactions = new List<Common.Transaction>();
+            this._pumpStates = new Dictionary<string, PumpState>();
+            this._transactions = new List<Transaction>();
         }
 
         public void HandleActivationRequest(string pumpId)
         {
-            if (this._pumpStatuses.ContainsKey(pumpId))
+            if (this._pumpStates.ContainsKey(pumpId))
             {
                 var currentStatus = GetPumpStatus(pumpId);
                 if (currentStatus == PumpState.Inactive)
                 {
-                    this._pumpStatuses[pumpId] = PumpState.CustomerWaiting;
+                    this._pumpStates[pumpId] = PumpState.CustomerWaiting;
                 }
             }
             else
             {
-                this._pumpStatuses.Add(pumpId, PumpState.CustomerWaiting);
+                this._pumpStates.Add(pumpId, PumpState.CustomerWaiting);
             }
         }
 
@@ -40,37 +39,27 @@ namespace PetrofexSystem.PosTerminals
             var currentPumpStatus = this.GetPumpStatus(pumpId);
             if (currentPumpStatus.Equals(PumpState.CustomerWaiting))
             {
-                this._pumpStatuses[pumpId] = PumpState.ActivationPending;
+                this._pumpStates[pumpId] = PumpState.ActivationPending;
             }
         }
 
         public PumpState GetPumpStatus(string pumpId)
         {
-            return this._pumpStatuses.ContainsKey(pumpId) ? this._pumpStatuses[pumpId] : PumpState.Error;
+            return this._pumpStates.ContainsKey(pumpId) ? this._pumpStates[pumpId] : PumpState.Error;
         }
 
         public void HandlePumpProgress(string pumpId, FuelType fuelType, double litresPumped, double totalPaid)
         {
-            if (this._pumpStatuses.ContainsKey(pumpId))
+            if (this._pumpStates.ContainsKey(pumpId))
             {
-                this._pumpStatuses[pumpId] = PumpState.Active;
+                this._pumpStates[pumpId] = PumpState.Active;
             }
             else
             {
                 throw new InvalidOperationException(string.Format("Cannot handle progress on non-existent pump with ID {0}", pumpId));
             }
 
-            this.UpdateLastTransactions(pumpId, fuelType, litresPumped, totalPaid);
-        }
-
-        private void UpdateLastTransactions(string pumpId, FuelType fuelType, double litresPumped, double totalPaid)
-        {
-            var existingTransaction = this.GetLatestTransaction(pumpId);
-            if (!existingTransaction.Equals(default(Common.Transaction)))
-            {
-                this._transactions.Remove(existingTransaction);
-            }
-            var newTransaction = new Common.Transaction()
+            var newTransaction = new Transaction
             {
                 PumpId = pumpId,
                 FuelType = fuelType,
@@ -78,20 +67,45 @@ namespace PetrofexSystem.PosTerminals
                 TotalAmount = totalPaid,
                 IsPaid = false
             };
-            this._transactions.Add(newTransaction);
+            this.UpdateLastTransactions(newTransaction);
+        }
+
+        private void UpdateLastTransactions(Transaction transaction)
+        {
+            var existingTransaction = this.GetLatestTransaction(transaction.PumpId);
+            if (!existingTransaction.Equals(default(Transaction)))
+            {
+                this._transactions.Remove(existingTransaction);
+            }
+            this._transactions.Add(transaction);
         }
 
         public void HandleDeactivationRequest(string pumpId)
         {
-            if (this._pumpStatuses.ContainsKey(pumpId))
+            this.UpdateState(pumpId, PumpState.AwaitingPayment);
+        }
+
+        public Transaction GetLatestTransaction(string pumpId)
+        {
+            return this._transactions.FirstOrDefault(x => x.PumpId == pumpId);
+        }
+
+        public void SubmitPayment(string pumpId)
+        {
+            this.UpdateState(pumpId, PumpState.PaymentMade);
+        }
+
+        private void UpdateState(string pumpId, PumpState newState)
+        {
+            if (this._pumpStates.ContainsKey(pumpId))
             {
-                this._pumpStatuses[pumpId] = PumpState.AwaitingPayment;
+                this._pumpStates[pumpId] = newState;
             }
         }
 
-        public Common.Transaction GetLatestTransaction(string pumpId)
+        public void ReceivePaymentAcknowledged(string pumpId)
         {
-            return this._transactions.FirstOrDefault(x => x.PumpId == pumpId);
+            this.UpdateState(pumpId, PumpState.Inactive);
         }
     }
 }
