@@ -16,7 +16,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
 
             pumpManager.HandleActivationRequest(pumpId);
 
-            Assert.AreEqual(PumpStatus.CustomerWaiting, pumpManager.GetPumpStatus(pumpId));
+            Assert.AreEqual(PumpState.CustomerWaiting, pumpManager.GetPumpStatus(pumpId));
         }
 
         [TestMethod]
@@ -29,7 +29,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             pumpManager.ActivatePump(pumpId);
             pumpManager.HandleActivationRequest(pumpId);
 
-            Assert.AreEqual(PumpStatus.ActivationPending, pumpManager.GetPumpStatus(pumpId));
+            Assert.AreEqual(PumpState.ActivationPending, pumpManager.GetPumpStatus(pumpId));
         }
 
         // Test handling for progress update 
@@ -43,7 +43,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             pumpManager.ActivatePump(pumpId);
             pumpManager.HandlePumpProgress(pumpId, 0, 0, 0);
 
-            Assert.AreEqual(PumpStatus.Active, pumpManager.GetPumpStatus(pumpId));
+            Assert.AreEqual(PumpState.Active, pumpManager.GetPumpStatus(pumpId));
         }
 
         [TestMethod]
@@ -113,7 +113,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
 
             pumpManager.HandleDeactivationRequest(pumpId);
 
-            Assert.AreEqual(PumpStatus.AwaitingPayment, pumpManager.GetPumpStatus(pumpId));
+            Assert.AreEqual(PumpState.AwaitingPayment, pumpManager.GetPumpStatus(pumpId));
         }
 
     }

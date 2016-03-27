@@ -19,7 +19,7 @@ namespace PetrofexSystem.PosTerminals
             this._pumpManager.ActivatePump(pumpId);
         }
 
-        public PumpStatus GetPumpStatus(string pumpId)
+        public PumpState GetPumpStatus(string pumpId)
         {
             return this._pumpManager.GetPumpStatus(pumpId);
         }

@@ -10,12 +10,12 @@ namespace PetrofexSystem.PosTerminals
 {
     public class PumpManager
     {
-        private readonly IDictionary<string, PumpStatus> _pumpStatuses;
+        private readonly IDictionary<string, PumpState> _pumpStatuses;
         private readonly ICollection<Common.Transaction> _transactions;
 
         public PumpManager()
         {
-            this._pumpStatuses = new Dictionary<string, PumpStatus>();
+            this._pumpStatuses = new Dictionary<string, PumpState>();
             this._transactions = new List<Common.Transaction>();
         }
 
@@ -24,36 +24,36 @@ namespace PetrofexSystem.PosTerminals
             if (this._pumpStatuses.ContainsKey(pumpId))
             {
                 var currentStatus = GetPumpStatus(pumpId);
-                if (currentStatus == PumpStatus.Inactive)
+                if (currentStatus == PumpState.Inactive)
                 {
-                    this._pumpStatuses[pumpId] = PumpStatus.CustomerWaiting;
+                    this._pumpStatuses[pumpId] = PumpState.CustomerWaiting;
                 }
             }
             else
             {
-                this._pumpStatuses.Add(pumpId, PumpStatus.CustomerWaiting);
+                this._pumpStatuses.Add(pumpId, PumpState.CustomerWaiting);
             }
         }
 
         public void ActivatePump(string pumpId)
         {
             var currentPumpStatus = this.GetPumpStatus(pumpId);
-            if (currentPumpStatus.Equals(PumpStatus.CustomerWaiting))
+            if (currentPumpStatus.Equals(PumpState.CustomerWaiting))
             {
-                this._pumpStatuses[pumpId] = PumpStatus.ActivationPending;
+                this._pumpStatuses[pumpId] = PumpState.ActivationPending;
             }
         }
 
-        public PumpStatus GetPumpStatus(string pumpId)
+        public PumpState GetPumpStatus(string pumpId)
         {
-            return this._pumpStatuses.ContainsKey(pumpId) ? this._pumpStatuses[pumpId] : PumpStatus.Error;
+            return this._pumpStatuses.ContainsKey(pumpId) ? this._pumpStatuses[pumpId] : PumpState.Error;
         }
 
         public void HandlePumpProgress(string pumpId, FuelType fuelType, double litresPumped, double totalPaid)
         {
             if (this._pumpStatuses.ContainsKey(pumpId))
             {
-                this._pumpStatuses[pumpId] = PumpStatus.Active;
+                this._pumpStatuses[pumpId] = PumpState.Active;
             }
             else
             {
@@ -85,7 +85,7 @@ namespace PetrofexSystem.PosTerminals
         {
             if (this._pumpStatuses.ContainsKey(pumpId))
             {
-                this._pumpStatuses[pumpId] = PumpStatus.AwaitingPayment;
+                this._pumpStatuses[pumpId] = PumpState.AwaitingPayment;
             }
         }
 

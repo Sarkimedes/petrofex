@@ -1,6 +1,6 @@
 ﻿namespace PetrofexSystem.PosTerminals
 {
-    public enum PumpStatus
+    public enum PumpState
     {
         CustomerWaiting,
         ActivationPending,

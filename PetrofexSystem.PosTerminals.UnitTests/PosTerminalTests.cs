@@ -16,7 +16,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             pumpManager.HandleActivationRequest(pumpId);
             posTerminal.ActivatePump(pumpId);
 
-            Assert.AreEqual(PumpStatus.ActivationPending, pumpManager.GetPumpStatus(pumpId));
+            Assert.AreEqual(PumpState.ActivationPending, pumpManager.GetPumpStatus(pumpId));
         }
 
 
@@ -32,7 +32,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             posTerminal.ActivatePump(pumpId);
             posTerminal.ActivatePump(pumpId);
 
-            Assert.AreEqual(PumpStatus.ActivationPending, posTerminal.GetPumpStatus(pumpId));
+            Assert.AreEqual(PumpState.ActivationPending, posTerminal.GetPumpStatus(pumpId));
         }
 
         [TestMethod]
@@ -47,8 +47,8 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             posTerminal.ActivatePump(pumpId);
             posTerminal2.ActivatePump(pumpId);
 
-            Assert.AreEqual(PumpStatus.ActivationPending, posTerminal.GetPumpStatus(pumpId));
-            Assert.AreEqual(PumpStatus.ActivationPending, posTerminal2.GetPumpStatus(pumpId));
+            Assert.AreEqual(PumpState.ActivationPending, posTerminal.GetPumpStatus(pumpId));
+            Assert.AreEqual(PumpState.ActivationPending, posTerminal2.GetPumpStatus(pumpId));
         }
 
         [TestMethod]
@@ -63,8 +63,8 @@ namespace PetrofexSystem.PosTerminals.UnitTests
 
             posTerminal.ActivatePump(pumpId);
 
-            Assert.AreEqual(PumpStatus.ActivationPending, posTerminal.GetPumpStatus(pumpId));
-            Assert.AreEqual(PumpStatus.CustomerWaiting, posTerminal.GetPumpStatus(pumpId2));
+            Assert.AreEqual(PumpState.ActivationPending, posTerminal.GetPumpStatus(pumpId));
+            Assert.AreEqual(PumpState.CustomerWaiting, posTerminal.GetPumpStatus(pumpId2));
         }
 
         [TestMethod]
@@ -78,7 +78,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
 
             posTerminal.ActivatePump(pumpId);
             
-            Assert.AreEqual(PumpStatus.ActivationPending, posTerminal2.GetPumpStatus(pumpId));
+            Assert.AreEqual(PumpState.ActivationPending, posTerminal2.GetPumpStatus(pumpId));
         }
     }
 }
