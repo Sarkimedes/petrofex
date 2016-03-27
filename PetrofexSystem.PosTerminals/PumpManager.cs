@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using PumpLibrary;
 
@@ -10,12 +11,12 @@ namespace PetrofexSystem.PosTerminals
     public class PumpManager
     {
         private readonly IDictionary<string, PumpStatus> _pumpStatuses;
-        private readonly IDictionary<string, Transaction> _lastTransactionsByPumpId;
+        private readonly ICollection<Common.Transaction> _transactions;
 
         public PumpManager()
         {
             this._pumpStatuses = new Dictionary<string, PumpStatus>();
-            this._lastTransactionsByPumpId = new Dictionary<string, Transaction>();
+            this._transactions = new List<Common.Transaction>();
         }
 
         public void HandleActivationRequest(string pumpId)
@@ -59,26 +60,25 @@ namespace PetrofexSystem.PosTerminals
                 throw new InvalidOperationException(string.Format("Cannot handle progress on non-existent pump with ID {0}", pumpId));
             }
 
-            if (this._lastTransactionsByPumpId.ContainsKey(pumpId))
+            this.UpdateLastTransactions(pumpId, fuelType, litresPumped, totalPaid);
+        }
+
+        private void UpdateLastTransactions(string pumpId, FuelType fuelType, double litresPumped, double totalPaid)
+        {
+            var existingTransaction = this.GetLatestTransaction(pumpId);
+            if (!existingTransaction.Equals(default(Common.Transaction)))
             {
-                this._lastTransactionsByPumpId[pumpId] = new Transaction()
-                {
-                    FuelType = fuelType,
-                    LitresPumped = litresPumped,
-                    TotalAmount = totalPaid,
-                    IsPaid = false
-                };
+                this._transactions.Remove(existingTransaction);
             }
-            else
+            var newTransaction = new Common.Transaction()
             {
-                this._lastTransactionsByPumpId.Add(pumpId, new Transaction()
-                {
-                    FuelType = fuelType,
-                    LitresPumped = litresPumped,
-                    TotalAmount = totalPaid,
-                    IsPaid = false
-                });
-            }
+                PumpId = pumpId,
+                FuelType = fuelType,
+                LitresPumped = litresPumped,
+                TotalAmount = totalPaid,
+                IsPaid = false
+            };
+            this._transactions.Add(newTransaction);
         }
 
         public void HandleDeactivationRequest(string pumpId)
@@ -89,9 +89,9 @@ namespace PetrofexSystem.PosTerminals
             }
         }
 
-        public Transaction GetLatestTransaction(string pumpId)
+        public Common.Transaction GetLatestTransaction(string pumpId)
         {
-            return this._lastTransactionsByPumpId[pumpId];
+            return this._transactions.FirstOrDefault(x => x.PumpId == pumpId);
         }
     }
 }

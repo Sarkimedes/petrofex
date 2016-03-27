@@ -61,6 +61,10 @@
     <Compile Include="PumpManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PetrofexSystem.Common\PetrofexSystem.Common.csproj">
+      <Project>{018ace40-f7e6-4c36-a76a-adc790c1a009}</Project>
+      <Name>PetrofexSystem.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PetrofexSystem.PosTerminals\PetrofexSystem.PosTerminals.csproj">
       <Project>{eea0c771-22de-46a0-a2cf-80eb134a73de}</Project>
       <Name>PetrofexSystem.PosTerminals</Name>

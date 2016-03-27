@@ -58,8 +58,9 @@ namespace PetrofexSystem.PosTerminals.UnitTests
 
             var transaction = pumpManager.GetLatestTransaction(pumpId);
             Assert.AreEqual(
-                new Transaction()
+                new Common.Transaction()
                 {
+                    PumpId = pumpId,
                     FuelType = FuelType.Diesel,
                     LitresPumped = 1,
                     TotalAmount = 1,
@@ -80,8 +81,9 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             pumpManager.HandlePumpProgress(pumpId, FuelType.Diesel, 2, 2);
 
             var latestTransaction = pumpManager.GetLatestTransaction(pumpId);
-            var expectedTransaction = new Transaction()
+            var expectedTransaction = new Common.Transaction()
             {
+                PumpId = pumpId,
                 FuelType = FuelType.Diesel,
                 LitresPumped = 2,
                 TotalAmount = 2,
