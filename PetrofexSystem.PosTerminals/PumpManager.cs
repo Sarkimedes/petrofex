@@ -48,7 +48,6 @@ namespace PetrofexSystem.PosTerminals
             return this._pumpStates.ContainsKey(pumpId) ? this._pumpStates[pumpId] : PumpState.Error;
         }
 
-
         public void HandlePumpProgress(Transaction transaction)
         {
             if (this._pumpStates.ContainsKey(transaction.PumpId))
