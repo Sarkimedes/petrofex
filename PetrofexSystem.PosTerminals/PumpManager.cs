@@ -48,26 +48,47 @@ namespace PetrofexSystem.PosTerminals
             return this._pumpStates.ContainsKey(pumpId) ? this._pumpStates[pumpId] : PumpState.Error;
         }
 
-        public void HandlePumpProgress(string pumpId, FuelType fuelType, double litresPumped, double totalPaid)
+
+        public void HandlePumpProgress(Transaction transaction)
         {
-            if (this._pumpStates.ContainsKey(pumpId))
+            if (this._pumpStates.ContainsKey(transaction.PumpId))
             {
-                this._pumpStates[pumpId] = PumpState.Active;
+                this._pumpStates[transaction.PumpId] = PumpState.Active;
             }
             else
             {
-                throw new InvalidOperationException(string.Format("Cannot handle progress on non-existent pump with ID {0}", pumpId));
+                throw new InvalidOperationException(string.Format("Cannot handle progress on non-existent pump with ID {0}", transaction.PumpId));
             }
 
-            var newTransaction = new Transaction
+            this.UpdateLastTransactions(transaction);
+        }
+
+        public void HandleDeactivationRequest(string pumpId)
+        {
+            this.UpdateState(pumpId, PumpState.AwaitingPayment);
+        }
+
+        public void SubmitPayment(string pumpId)
+        {
+            this.UpdateState(pumpId, PumpState.PaymentMade);
+        }
+
+        public void ReceivePaymentAcknowledged(string pumpId)
+        {
+            this.UpdateState(pumpId, PumpState.Inactive);
+        }
+
+        private void UpdateState(string pumpId, PumpState newState)
+        {
+            if (this._pumpStates.ContainsKey(pumpId))
             {
-                PumpId = pumpId,
-                FuelType = fuelType,
-                LitresPumped = litresPumped,
-                TotalAmount = totalPaid,
-                IsPaid = false
-            };
-            this.UpdateLastTransactions(newTransaction);
+                this._pumpStates[pumpId] = newState;
+            }
+        }
+
+        public Transaction GetLatestTransaction(string pumpId)
+        {
+            return this._transactions.FirstOrDefault(x => x.PumpId == pumpId);
         }
 
         private void UpdateLastTransactions(Transaction transaction)
@@ -80,32 +101,5 @@ namespace PetrofexSystem.PosTerminals
             this._transactions.Add(transaction);
         }
 
-        public void HandleDeactivationRequest(string pumpId)
-        {
-            this.UpdateState(pumpId, PumpState.AwaitingPayment);
-        }
-
-        public Transaction GetLatestTransaction(string pumpId)
-        {
-            return this._transactions.FirstOrDefault(x => x.PumpId == pumpId);
-        }
-
-        public void SubmitPayment(string pumpId)
-        {
-            this.UpdateState(pumpId, PumpState.PaymentMade);
-        }
-
-        private void UpdateState(string pumpId, PumpState newState)
-        {
-            if (this._pumpStates.ContainsKey(pumpId))
-            {
-                this._pumpStates[pumpId] = newState;
-            }
-        }
-
-        public void ReceivePaymentAcknowledged(string pumpId)
-        {
-            this.UpdateState(pumpId, PumpState.Inactive);
-        }
     }
 }

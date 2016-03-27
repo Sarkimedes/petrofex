@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection.Emit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PetrofexSystem.Common;
 using PumpLibrary;
 
 namespace PetrofexSystem.PosTerminals.UnitTests
@@ -41,7 +42,10 @@ namespace PetrofexSystem.PosTerminals.UnitTests
 
             pumpManager.HandleActivationRequest(pumpId);
             pumpManager.ActivatePump(pumpId);
-            pumpManager.HandlePumpProgress(pumpId, 0, 0, 0);
+            pumpManager.HandlePumpProgress(new Transaction()
+            {
+                PumpId = pumpId
+            });
 
             Assert.AreEqual(PumpState.Active, pumpManager.GetPumpStatus(pumpId));
         }
@@ -54,11 +58,17 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             pumpManager.HandleActivationRequest(pumpId);
             pumpManager.ActivatePump(pumpId);
 
-            pumpManager.HandlePumpProgress(pumpId, FuelType.Diesel, 1, 1);
+            pumpManager.HandlePumpProgress(new Transaction()
+            {
+                PumpId = pumpId,
+                FuelType = FuelType.Diesel,
+                LitresPumped = 1,
+                TotalAmount = 1
+            });
 
             var transaction = pumpManager.GetLatestTransaction(pumpId);
             Assert.AreEqual(
-                new Common.Transaction()
+                new Transaction()
                 {
                     PumpId = pumpId,
                     FuelType = FuelType.Diesel,
@@ -77,11 +87,23 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             pumpManager.HandleActivationRequest(pumpId);
             pumpManager.ActivatePump(pumpId);
 
-            pumpManager.HandlePumpProgress(pumpId, FuelType.Diesel, 1, 1);
-            pumpManager.HandlePumpProgress(pumpId, FuelType.Diesel, 2, 2);
+            pumpManager.HandlePumpProgress(new Transaction()
+            {
+                PumpId = pumpId,
+                FuelType = FuelType.Diesel,
+                LitresPumped = 1,
+                TotalAmount = 1
+            });
+            pumpManager.HandlePumpProgress(new Transaction()
+            {
+                PumpId = pumpId,
+                FuelType = FuelType.Diesel,
+                LitresPumped = 2,
+                TotalAmount = 2
+            });
 
             var latestTransaction = pumpManager.GetLatestTransaction(pumpId);
-            var expectedTransaction = new Common.Transaction()
+            var expectedTransaction = new Transaction()
             {
                 PumpId = pumpId,
                 FuelType = FuelType.Diesel,
@@ -99,7 +121,10 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             var pumpManager = new PumpManager();
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
 
-            pumpManager.HandlePumpProgress(pumpId, 0, 0, 0);
+            pumpManager.HandlePumpProgress(new Transaction()
+            {
+                PumpId = pumpId
+            });
         }
 
         // Check that state changes to mark pump as awaiting payment when pumping is finished
@@ -109,7 +134,10 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             var pumpManager = new PumpManager();
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
             pumpManager.HandleActivationRequest(pumpId);
-            pumpManager.HandlePumpProgress(pumpId, 0, 0, 0);
+            pumpManager.HandlePumpProgress(new Transaction()
+            {
+                PumpId = pumpId
+            });
 
             pumpManager.HandleDeactivationRequest(pumpId);
 
@@ -123,7 +151,10 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             var pumpManager = new PumpManager();
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
             pumpManager.HandleActivationRequest(pumpId);
-            pumpManager.HandlePumpProgress(pumpId, 0, 0, 0);
+            pumpManager.HandlePumpProgress(new Transaction()
+            {
+                PumpId = pumpId
+            });
             pumpManager.HandleDeactivationRequest(pumpId);
 
             pumpManager.SubmitPayment(pumpId);
@@ -138,7 +169,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             var pumpManager = new PumpManager();
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
             pumpManager.HandleActivationRequest(pumpId);
-            pumpManager.HandlePumpProgress(pumpId, 0, 0, 0);
+            pumpManager.HandlePumpProgress(new Transaction() { PumpId = pumpId });
             pumpManager.HandleDeactivationRequest(pumpId);
             pumpManager.SubmitPayment(pumpId);
 
