@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PetrofexSystem.Common;
 using PumpLibrary;
 
 namespace PetrofexSystem
@@ -17,8 +18,7 @@ namespace PetrofexSystem
 
         public string PumpId { get { return this._pumpId; } }
 
-        public FuelTransaction CurrentTransaction { get; private set; }
-        internal FuelTransaction NextTransaction { get; private set; }
+        public Transaction CurrentTransaction { get; private set; }
 
         public Pump(
             IPumpActivationServer pumpActivationServer,
@@ -40,7 +40,6 @@ namespace PetrofexSystem
         public void Activate()
         {
             this._fuelPrices = this._fuelPricesServer.GetFuelPrices();
-            this.CurrentTransaction = this.NextTransaction;
             this._customerGenerator.ActivatePump();
             this.IsActive = true;
         }
@@ -55,14 +54,16 @@ namespace PetrofexSystem
             {
                 throw new ArgumentNullException("customerReadyEventArgs");
             }
-
-            this.NextTransaction = new FuelTransaction()
+            
+            this._pumpActivationServer.RequestActivation(this.PumpId);
+            this.CurrentTransaction = new Transaction()
             {
+                PumpId = this.PumpId,
                 FuelType = customerReadyEventArgs.SelectedFuel,
                 LitresPumped = 0,
-                Total = 0
+                TotalAmount = 0,
+                IsPaid = false
             };
-            this._pumpActivationServer.RequestActivation(this.PumpId);
         }
 
         private void CustomerGeneratorOnPumpProgress(
@@ -78,12 +79,12 @@ namespace PetrofexSystem
                 this._fuelPrices[CurrentTransaction.FuelType] *
                 pumpProgressEventArgs.LitresPumped;
 
-            this.CurrentTransaction = new FuelTransaction()
+            this.CurrentTransaction = new Transaction()
             {
                 PumpId = this.PumpId,
                 FuelType = CurrentTransaction.FuelType,
                 LitresPumped = this.CurrentTransaction.LitresPumped + pumpProgressEventArgs.LitresPumped,
-                Total = CurrentTransaction.Total + increment
+                TotalAmount = this.CurrentTransaction.TotalAmount + increment
             };
 
             this._transactionServer.SendFuelTransaction(this.CurrentTransaction);

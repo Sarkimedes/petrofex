@@ -51,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomerGeneratorAdapter.cs" />
-    <Compile Include="FuelTransaction.cs" />
     <Compile Include="ICustomerGenerator.cs" />
     <Compile Include="IFuelPricesServer.cs" />
     <Compile Include="IPumpActivationServer.cs" />
@@ -63,6 +62,12 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PetrofexSystem.Common\PetrofexSystem.Common.csproj">
+      <Project>{018ace40-f7e6-4c36-a76a-adc790c1a009}</Project>
+      <Name>PetrofexSystem.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

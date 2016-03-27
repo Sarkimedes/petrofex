@@ -8,7 +8,7 @@ namespace PetrofexSystem.Pumps.TestApp
 {
     class LocalActivationServer : IPumpActivationServer
     {
-        private List<Pump> _knownPumps;
+        private readonly List<Pump> _knownPumps;
 
         public LocalActivationServer()
         {

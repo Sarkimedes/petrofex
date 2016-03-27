@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PetrofexSystem.Common;
 
 namespace PetrofexSystem.Pumps.UnitTests
 {
     internal class FakeTransactionServer : ITransactionServer
     {
-        internal FuelTransaction LastTransaction { get; private set; }
+        internal Transaction LastTransaction { get; private set; }
 
-        public void SendFuelTransaction(FuelTransaction transaction)
+        public void SendFuelTransaction(Transaction transaction)
         {
             this.LastTransaction = transaction;
         }
 
         public void Reset()
         {
-            this.LastTransaction = default(FuelTransaction);
+            this.LastTransaction = default(Transaction);
         }
     }
 }
