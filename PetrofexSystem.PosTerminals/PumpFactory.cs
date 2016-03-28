@@ -8,10 +8,12 @@ namespace PetrofexSystem.PosTerminals
     public class PumpFactory
     {
         private readonly ICollection<Pump> _pumps;
+        private readonly IPaymentServer _paymentServer;
 
-        public PumpFactory()
+        public PumpFactory(IPaymentServer paymentServer)
         {
             this._pumps = new List<Pump>();
+            this._paymentServer = paymentServer;
         }
 
         public Pump HandleActivationRequest(string pumpId)
@@ -22,7 +24,7 @@ namespace PetrofexSystem.PosTerminals
                 return pump;
             }
 
-            var addedPump = new Pump(pumpId);
+            var addedPump = new Pump(pumpId, this._paymentServer);
             this._pumps.Add(addedPump);
             return addedPump;
         }

@@ -12,11 +12,12 @@ namespace PetrofexSystem.PosTerminals
     public class Pump
     {
         private readonly PumpStateManager _stateManager;
+        private readonly IPaymentServer _paymentServer;
 
-        public Pump(string id)
+        internal Pump(string id, IPaymentServer paymentServer)
         {
             this.Id = id;
-
+            this._paymentServer = paymentServer;
             this._stateManager = new PumpStateManager();
             this._stateManager.SetState(PumpState.CustomerWaiting);
         }
@@ -51,11 +52,20 @@ namespace PetrofexSystem.PosTerminals
 
         public void PayCurrentTransaction()
         {
+            this._paymentServer.SendForProcessing(this.CurrentTransaction);
             this._stateManager.SetState(PumpState.PaymentMade);
         }
 
         public void HandlePaymentAcknowledged()
         {
+            this.CurrentTransaction = new Transaction()
+            {
+                PumpId = this.CurrentTransaction.PumpId,
+                FuelType = this.CurrentTransaction.FuelType,
+                LitresPumped = this.CurrentTransaction.LitresPumped,
+                TotalAmount = this.CurrentTransaction.TotalAmount,
+                IsPaid = true
+            };
             this._stateManager.SetState(PumpState.Inactive);
         }
     }

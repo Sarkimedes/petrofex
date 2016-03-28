@@ -12,7 +12,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
         public void HandleActivationRequest_ForAlreadyActivePump_IgnoresActivationRequest()
         {
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
-            var factory = new PumpFactory();
+            var factory = new PumpFactory(new FakePaymentServer());
             var pump = factory.HandleActivationRequest(pumpId);
             pump.Activate();
 
@@ -24,10 +24,8 @@ namespace PetrofexSystem.PosTerminals.UnitTests
         // Test handling for progress update 
         [TestMethod]
         public void HandlePumpProgress_ForPumpWithPendingActivation_UpdatesPumpStatusToActive()
-        {            
-            var pumpFactory = new PumpFactory();
-            var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
-            var pump = pumpFactory.HandleActivationRequest(pumpId);
+        {
+            var pump = this.CreateNewPump();
             pump.Activate();
 
             pump.HandlePumpProgress(new Transaction());
@@ -38,9 +36,8 @@ namespace PetrofexSystem.PosTerminals.UnitTests
         [TestMethod]
         public void HandlePumpProgress_ForActivePump_UpdatesTransactionForThatPump()
         {
-            var pumpFactory = new PumpFactory();
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
-            var pump = pumpFactory.HandleActivationRequest(pumpId);
+            var pump = CreatePumpWithId(pumpId);
             pump.Activate();
 
             pump.HandlePumpProgress(new Transaction()
@@ -67,9 +64,8 @@ namespace PetrofexSystem.PosTerminals.UnitTests
         [TestMethod]
         public void HandlePumpProgress_CalledTwiceOnActivePump_UpdatesTransactionForThatPump()
         {
-            var pumpFactory = new PumpFactory();
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
-            var pump = pumpFactory.HandleActivationRequest(pumpId);
+            var pump = CreatePumpWithId(pumpId);
             pump.Activate();
 
             pump.HandlePumpProgress(new Transaction()
@@ -103,9 +99,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
         [TestMethod]
         public void HandleDeactivationRequest_ForActivePump_UpdatesPumpStatusToAwaitingPayment()
         {
-            var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
-            var pumpFactory = new PumpFactory();
-            var pump = pumpFactory.HandleActivationRequest(pumpId);
+            var pump = this.CreateNewPump();
             pump.Activate();
             pump.HandlePumpProgress(new Transaction());
 
@@ -118,8 +112,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
         [TestMethod]
         public void PayCurrentTransaction_ForActivePump_UpdatesPumpStatusToPaymentMade()
         {
-            var pumpFactory = new PumpFactory();
-            var pump = pumpFactory.HandleActivationRequest(Guid.NewGuid().ToString());
+            var pump = this.CreateNewPump();
             pump.Activate();
             pump.HandlePumpProgress(new Transaction());
             pump.Deactivate();
@@ -129,14 +122,47 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             Assert.AreEqual(PumpState.PaymentMade, pump.CurrentState);
         }
 
+        [TestMethod]
+        public void PayCurrentTransaction_WithValidTransaction_SendsTransactionToTheServer()
+        {
+            var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
+            var paymentServer = new FakePaymentServer();
+            var pumpFactory = new PumpFactory(paymentServer);
+            var pump = pumpFactory.HandleActivationRequest(pumpId);
+            pump.Activate();
+            pump.HandlePumpProgress(new Transaction()
+            {
+                FuelType = FuelType.Hydrogen,
+                IsPaid = false,
+                LitresPumped = 1,
+                TotalAmount = 2,
+                PumpId = pumpId
+            });
+            pump.Deactivate();
+            
+            pump.PayCurrentTransaction();
+
+            Assert.AreEqual(pump.CurrentTransaction, paymentServer.LastTransaction);
+        }
+
+        private Pump CreatePumpWithId(string id)
+        {
+            var pumpFactory = new PumpFactory(new FakePaymentServer());
+            return pumpFactory.HandleActivationRequest(id);
+        }
+
+        private Pump CreateNewPump()
+        {
+            return this.CreatePumpWithId(Guid.NewGuid().ToString());
+        }
+
         // Check transaction is not already paid before attempting to send it.
 
         // Check that state changes to mark pump as inactive when payment is acknowledged
         [TestMethod]
         public void ReceivePaymentAcknowledged_ForActivePump_UpdatesPumpStatusToInactive()
         {
-            var factory = new PumpFactory();
-            var pump = factory.HandleActivationRequest(Guid.NewGuid().ToString());
+            var pump = this.CreateNewPump();
             pump.Activate();
             pump.HandlePumpProgress(new Transaction());
             pump.Deactivate();
@@ -145,6 +171,20 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             pump.HandlePaymentAcknowledged();
             
             Assert.AreEqual(PumpState.Inactive, pump.CurrentState);
+        }
+
+        [TestMethod]
+        public void HandlePaymentAcknowledged_ForPumpWithValidPayment_UpdatesCurrentTransactionToPaid()
+        {
+            var pump = this.CreateNewPump();
+            pump.Activate();
+            pump.HandlePumpProgress(new Transaction());
+            pump.Deactivate();
+            pump.PayCurrentTransaction();
+
+            pump.HandlePaymentAcknowledged();
+
+            Assert.IsTrue(pump.CurrentTransaction.IsPaid);
         }
     }
 }
