@@ -13,157 +13,138 @@ namespace PetrofexSystem.PosTerminals.UnitTests
         {
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
             var factory = new PumpFactory();
-
             var pump = factory.HandleActivationRequest(pumpId);
             pump.Activate();
+
             pump = factory.HandleActivationRequest(pumpId);
 
             Assert.AreEqual(PumpState.ActivationPending, pump.CurrentState);            
         }
 
-        //// Test handling for progress update 
-        //[TestMethod]
-        //public void HandlePumpProgress_ForActivePump_UpdatesPumpStatusToActive()
-        //{
-        //    var pumpManager = new PumpManager();
-        //    var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
+        // Test handling for progress update 
+        [TestMethod]
+        public void HandlePumpProgress_ForPumpWithPendingActivation_UpdatesPumpStatusToActive()
+        {            
+            var pumpFactory = new PumpFactory();
+            var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
+            var pump = pumpFactory.HandleActivationRequest(pumpId);
+            pump.Activate();
 
-        //    pumpManager.HandleActivationRequest(pumpId);
-        //    pumpManager.ActivatePump(pumpId);
-        //    pumpManager.HandlePumpProgress(new Transaction()
-        //    {
-        //        PumpId = pumpId
-        //    });
+            pump.HandlePumpProgress(new Transaction());
 
-        //    Assert.AreEqual(PumpState.Active, pumpManager.GetPumpStatus(pumpId));
-        //}
+            Assert.AreEqual(PumpState.Active, pump.CurrentState);
+        }
 
-        //[TestMethod]
-        //public void HandlePumpProgress_ForActivePump_UpdatesTransactionForThatPump()
-        //{
-        //    var pumpManager = new PumpManager();
-        //    var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
-        //    pumpManager.HandleActivationRequest(pumpId);
-        //    pumpManager.ActivatePump(pumpId);
+        [TestMethod]
+        public void HandlePumpProgress_ForActivePump_UpdatesTransactionForThatPump()
+        {
+            var pumpFactory = new PumpFactory();
+            var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
+            var pump = pumpFactory.HandleActivationRequest(pumpId);
+            pump.Activate();
 
-        //    pumpManager.HandlePumpProgress(new Transaction()
-        //    {
-        //        PumpId = pumpId,
-        //        FuelType = FuelType.Diesel,
-        //        LitresPumped = 1,
-        //        TotalAmount = 1
-        //    });
+            pump.HandlePumpProgress(new Transaction()
+            {
+                PumpId = pumpId,
+                FuelType = FuelType.Diesel,
+                LitresPumped = 1,
+                TotalAmount = 1
+            });
 
-        //    var transaction = pumpManager.GetLatestTransaction(pumpId);
-        //    Assert.AreEqual(
-        //        new Transaction()
-        //        {
-        //            PumpId = pumpId,
-        //            FuelType = FuelType.Diesel,
-        //            LitresPumped = 1,
-        //            TotalAmount = 1,
-        //            IsPaid = false
-        //        },
-        //        transaction);
-        //}
+            var transaction = pump.CurrentTransaction;
+            Assert.AreEqual(
+                new Transaction()
+                {
+                    PumpId = pumpId,
+                    FuelType = FuelType.Diesel,
+                    LitresPumped = 1,
+                    TotalAmount = 1,
+                    IsPaid = false
+                },
+                transaction);
+        }
 
-        //[TestMethod]
-        //public void HandlePumpProgress_CalledTwiceOnActivePump_UpdatesTransactionForThatPump()
-        //{
-        //    var pumpManager = new PumpManager();
-        //    var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
-        //    pumpManager.HandleActivationRequest(pumpId);
-        //    pumpManager.ActivatePump(pumpId);
+        [TestMethod]
+        public void HandlePumpProgress_CalledTwiceOnActivePump_UpdatesTransactionForThatPump()
+        {
+            var pumpFactory = new PumpFactory();
+            var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
+            var pump = pumpFactory.HandleActivationRequest(pumpId);
+            pump.Activate();
 
-        //    pumpManager.HandlePumpProgress(new Transaction()
-        //    {
-        //        PumpId = pumpId,
-        //        FuelType = FuelType.Diesel,
-        //        LitresPumped = 1,
-        //        TotalAmount = 1
-        //    });
-        //    pumpManager.HandlePumpProgress(new Transaction()
-        //    {
-        //        PumpId = pumpId,
-        //        FuelType = FuelType.Diesel,
-        //        LitresPumped = 2,
-        //        TotalAmount = 2
-        //    });
+            pump.HandlePumpProgress(new Transaction()
+            {
+                PumpId = pumpId,
+                FuelType = FuelType.Diesel,
+                LitresPumped = 1,
+                TotalAmount = 1
+            });
+            pump.HandlePumpProgress(new Transaction()
+            {
+                PumpId = pumpId,
+                FuelType = FuelType.Diesel,
+                LitresPumped = 2,
+                TotalAmount = 2
+            });
 
-        //    var latestTransaction = pumpManager.GetLatestTransaction(pumpId);
-        //    var expectedTransaction = new Transaction()
-        //    {
-        //        PumpId = pumpId,
-        //        FuelType = FuelType.Diesel,
-        //        LitresPumped = 2,
-        //        TotalAmount = 2,
-        //        IsPaid = false
-        //    };
-        //    Assert.AreEqual(expectedTransaction, latestTransaction);
-        //}
+            var latestTransaction = pump.CurrentTransaction;
+            var expectedTransaction = new Transaction()
+            {
+                PumpId = pumpId,
+                FuelType = FuelType.Diesel,
+                LitresPumped = 2,
+                TotalAmount = 2,
+                IsPaid = false
+            };
+            Assert.AreEqual(expectedTransaction, latestTransaction);
+        }
 
-        //[TestMethod]
-        //[ExpectedException(typeof(InvalidOperationException))]
-        //public void HandlePumpProgress_ForNonExistentPump_ThrowsException()
-        //{
-        //    var pumpManager = new PumpManager();
-        //    var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
+        // Check that state changes to mark pump as awaiting payment when pumping is finished
+        [TestMethod]
+        public void HandleDeactivationRequest_ForActivePump_UpdatesPumpStatusToAwaitingPayment()
+        {
+            var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
+            var pumpFactory = new PumpFactory();
+            var pump = pumpFactory.HandleActivationRequest(pumpId);
+            pump.Activate();
+            pump.HandlePumpProgress(new Transaction());
 
-        //    pumpManager.HandlePumpProgress(new Transaction()
-        //    {
-        //        PumpId = pumpId
-        //    });
-        //}
+            pump.Deactivate();
 
-        //// Check that state changes to mark pump as awaiting payment when pumping is finished
-        //[TestMethod]
-        //public void HandleDeactivationRequest_ForActivePump_UpdatesPumpStatusToAwaitingPayment()
-        //{
-        //    var pumpManager = new PumpManager();
-        //    var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
-        //    pumpManager.HandleActivationRequest(pumpId);
-        //    pumpManager.HandlePumpProgress(new Transaction()
-        //    {
-        //        PumpId = pumpId
-        //    });
+            Assert.AreEqual(PumpState.AwaitingPayment, pump.CurrentState);
+        }
 
-        //    pumpManager.HandleDeactivationRequest(pumpId);
+        // Check that state changes to mark pump as payment made when pumping is finished
+        [TestMethod]
+        public void PayCurrentTransaction_ForActivePump_UpdatesPumpStatusToPaymentMade()
+        {
+            var pumpFactory = new PumpFactory();
+            var pump = pumpFactory.HandleActivationRequest(Guid.NewGuid().ToString());
+            pump.Activate();
+            pump.HandlePumpProgress(new Transaction());
+            pump.Deactivate();
 
-        //    Assert.AreEqual(PumpState.AwaitingPayment, pumpManager.GetPumpStatus(pumpId));
-        //}
+            pump.PayCurrentTransaction();
 
-        //// Check that state changes to mark pump as payment made when pumping is finished
-        //[TestMethod]
-        //public void MakePayment_ForActivePump_UpdatesPumpStatusToPaymentMade()
-        //{
-        //    var pumpManager = new PumpManager();
-        //    var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
-        //    pumpManager.HandleActivationRequest(pumpId);
-        //    pumpManager.HandlePumpProgress(new Transaction()
-        //    {
-        //        PumpId = pumpId
-        //    });
-        //    pumpManager.HandleDeactivationRequest(pumpId);
+            Assert.AreEqual(PumpState.PaymentMade, pump.CurrentState);
+        }
 
-        //    pumpManager.SubmitPayment(pumpId);
+        // Check transaction is not already paid before attempting to send it.
 
-        //    Assert.AreEqual(PumpState.PaymentMade, pumpManager.GetPumpStatus(pumpId));
-        //}
+        // Check that state changes to mark pump as inactive when payment is acknowledged
+        [TestMethod]
+        public void ReceivePaymentAcknowledged_ForActivePump_UpdatesPumpStatusToInactive()
+        {
+            var factory = new PumpFactory();
+            var pump = factory.HandleActivationRequest(Guid.NewGuid().ToString());
+            pump.Activate();
+            pump.HandlePumpProgress(new Transaction());
+            pump.Deactivate();
+            pump.PayCurrentTransaction();
 
-        //// Check that state changes to mark pump as inactive when payment is acknowledged
-        //[TestMethod]
-        //public void ReceivePaymentAcknowledged_ForActivePump_UpdatesPumpStatusToInactive()
-        //{
-        //    var pumpManager = new PumpManager();
-        //    var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
-        //    pumpManager.HandleActivationRequest(pumpId);
-        //    pumpManager.HandlePumpProgress(new Transaction() { PumpId = pumpId });
-        //    pumpManager.HandleDeactivationRequest(pumpId);
-        //    pumpManager.SubmitPayment(pumpId);
-
-        //    pumpManager.ReceivePaymentAcknowledged(pumpId);
-
-        //    Assert.AreEqual(PumpState.Inactive, pumpManager.GetPumpStatus(pumpId));
-        //}
+            pump.HandlePaymentAcknowledged();
+            
+            Assert.AreEqual(PumpState.Inactive, pump.CurrentState);
+        }
     }
 }

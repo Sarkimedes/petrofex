@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PetrofexSystem.Common;
 
 namespace PetrofexSystem.PosTerminals
 {
@@ -30,9 +31,32 @@ namespace PetrofexSystem.PosTerminals
             }
         }
 
+        public Transaction CurrentTransaction { get; private set; }
+
         public void Activate()
         {
             this._stateManager.SetState(PumpState.ActivationPending);
+        }
+
+        public void HandlePumpProgress(Transaction transaction)
+        {
+            this.CurrentTransaction = transaction;
+            this._stateManager.SetState(PumpState.Active);
+        }
+
+        public void Deactivate()
+        {
+            this._stateManager.SetState(PumpState.AwaitingPayment);
+        }
+
+        public void PayCurrentTransaction()
+        {
+            this._stateManager.SetState(PumpState.PaymentMade);
+        }
+
+        public void HandlePaymentAcknowledged()
+        {
+            this._stateManager.SetState(PumpState.Inactive);
         }
     }
 }
