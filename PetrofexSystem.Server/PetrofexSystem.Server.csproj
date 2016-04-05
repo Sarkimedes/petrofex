@@ -48,8 +48,11 @@
     <Compile Include="FuelPricesServer.cs" />
     <Compile Include="IFuelPricesServer.cs" />
     <Compile Include="INotifyPumpActivated.cs" />
+    <Compile Include="IPaymentDatabase.cs" />
+    <Compile Include="IPaymentServer.cs" />
     <Compile Include="IPumpActivationServer.cs" />
     <Compile Include="ITransactionServer.cs" />
+    <Compile Include="PaymentService.cs" />
     <Compile Include="PriceCache.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

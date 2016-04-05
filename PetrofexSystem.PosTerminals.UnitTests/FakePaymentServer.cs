@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using PetrofexSystem.Common;
+using PetrofexSystem.Server;
 
 namespace PetrofexSystem.PosTerminals.UnitTests
 {
