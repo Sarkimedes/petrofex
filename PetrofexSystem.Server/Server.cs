@@ -26,5 +26,7 @@ namespace PetrofexSystem.Server
 
         public event Action<string> PumpActivationRequested;
         public event Action<string> PumpDeactivationRequested;
+
+        
     }
 }

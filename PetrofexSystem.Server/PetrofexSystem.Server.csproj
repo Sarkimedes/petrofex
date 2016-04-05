@@ -40,14 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="INotifyPumpActivated.cs" />
+    <Compile Include="IPumpActivationServer.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PetrofexSystem\PetrofexSystem.Pumps.csproj">
-      <Project>{0cde52b5-743b-4e80-9058-7e156604c21d}</Project>
-      <Name>PetrofexSystem.Pumps</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
