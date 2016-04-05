@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Pumps", "PetrofexSystem\PetrofexSystem.Pumps.csproj", "{0CDE52B5-743B-4E80-9058-7E156604C21D}"
 EndProject
@@ -16,6 +16,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.PosTerminals.UnitTests", "PetrofexSystem.PosTerminals.UnitTests\PetrofexSystem.PosTerminals.UnitTests.csproj", "{C343EB07-67E8-4DBD-9565-DD4D69431B60}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Common", "PetrofexSystem.Common\PetrofexSystem.Common.csproj", "{018ACE40-F7E6-4C36-A76A-ADC790C1A009}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Server", "PetrofexSystem.Server\PetrofexSystem.Server.csproj", "{230F1AC3-A1B2-4042-AEAA-88653FD48A0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Server.UnitTests", "PetrofexSystem.Server.UnitTests\PetrofexSystem.Server.UnitTests.csproj", "{D21794C1-C51E-4391-852E-2DF9A4C710A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,14 @@ Global
 		{018ACE40-F7E6-4C36-A76A-ADC790C1A009}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{018ACE40-F7E6-4C36-A76A-ADC790C1A009}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{018ACE40-F7E6-4C36-A76A-ADC790C1A009}.Release|Any CPU.Build.0 = Release|Any CPU
+		{230F1AC3-A1B2-4042-AEAA-88653FD48A0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{230F1AC3-A1B2-4042-AEAA-88653FD48A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{230F1AC3-A1B2-4042-AEAA-88653FD48A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{230F1AC3-A1B2-4042-AEAA-88653FD48A0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D21794C1-C51E-4391-852E-2DF9A4C710A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D21794C1-C51E-4391-852E-2DF9A4C710A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D21794C1-C51E-4391-852E-2DF9A4C710A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D21794C1-C51E-4391-852E-2DF9A4C710A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
