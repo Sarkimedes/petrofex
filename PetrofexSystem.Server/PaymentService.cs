@@ -20,6 +20,8 @@ namespace PetrofexSystem.Server
             this._database = database;
         }
 
+
+
         public void SendForProcessing(Transaction transaction)
         {
             this._database.SaveTransaction(transaction);
