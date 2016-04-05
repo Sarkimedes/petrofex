@@ -6,7 +6,7 @@ using PetrofexSystem.Server;
 
 namespace PetrofexSystem.PosTerminals
 {
-    public class PumpFactory
+    public class PumpFactory : IPumpFactory
     {
         private readonly ICollection<Pump> _pumps;
         private readonly IPaymentServer _paymentServer;
@@ -17,7 +17,7 @@ namespace PetrofexSystem.PosTerminals
             this._paymentServer = paymentServer;
         }
 
-        public Pump HandleActivationRequest(string pumpId)
+        public Pump GetPumpById(string pumpId)
         {
             var pump = this._pumps.FirstOrDefault(x => x.Id == pumpId);
             if (pump != null)

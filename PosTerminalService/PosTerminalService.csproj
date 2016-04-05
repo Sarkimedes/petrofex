@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C343EB07-67E8-4DBD-9565-DD4D69431B60}</ProjectGuid>
+    <ProjectGuid>3a538ff3-dfd2-4bf1-abf6-4e01536f5da2</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PetrofexSystem.PosTerminals.UnitTests</RootNamespace>
-    <AssemblyName>PetrofexSystem.PosTerminals.UnitTests</AssemblyName>
+    <RootNamespace>PosTerminalService</RootNamespace>
+    <AssemblyName>PosTerminalService</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PumpLibrary">
-      <HintPath>..\Libs\PumpLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -56,26 +53,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="FakePaymentServer.cs" />
-    <Compile Include="MockPumpFactory.cs" />
-    <Compile Include="PosTerminalServiceTests.cs" />
+    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PumpStateManagerTests.cs" />
-    <Compile Include="PumpTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PetrofexSystem.Common\PetrofexSystem.Common.csproj">
-      <Project>{018ace40-f7e6-4c36-a76a-adc790c1a009}</Project>
-      <Name>PetrofexSystem.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PetrofexSystem.PosTerminals\PetrofexSystem.PosTerminals.csproj">
-      <Project>{eea0c771-22de-46a0-a2cf-80eb134a73de}</Project>
-      <Name>PetrofexSystem.PosTerminals</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PetrofexSystem.Server\PetrofexSystem.Server.csproj">
-      <Project>{230f1ac3-a1b2-4042-aeaa-88653fd48a0f}</Project>
-      <Name>PetrofexSystem.Server</Name>
-    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

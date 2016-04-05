@@ -13,10 +13,10 @@ namespace PetrofexSystem.PosTerminals.UnitTests
         {
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
             var factory = new PumpFactory(new FakePaymentServer());
-            var pump = factory.HandleActivationRequest(pumpId);
+            var pump = factory.GetPumpById(pumpId);
             pump.Activate();
 
-            pump = factory.HandleActivationRequest(pumpId);
+            pump = factory.GetPumpById(pumpId);
 
             Assert.AreEqual(PumpState.ActivationPending, pump.CurrentState);            
         }
@@ -128,7 +128,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             var pumpId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString();
             var paymentServer = new FakePaymentServer();
             var pumpFactory = new PumpFactory(paymentServer);
-            var pump = pumpFactory.HandleActivationRequest(pumpId);
+            var pump = pumpFactory.GetPumpById(pumpId);
             pump.Activate();
             pump.HandlePumpProgress(new Transaction()
             {
@@ -148,7 +148,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
         private Pump CreatePumpWithId(string id)
         {
             var pumpFactory = new PumpFactory(new FakePaymentServer());
-            return pumpFactory.HandleActivationRequest(id);
+            return pumpFactory.GetPumpById(id);
         }
 
         private Pump CreateNewPump()

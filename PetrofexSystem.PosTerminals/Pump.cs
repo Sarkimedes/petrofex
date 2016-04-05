@@ -15,7 +15,7 @@ namespace PetrofexSystem.PosTerminals
         private readonly PumpStateManager _stateManager;
         private readonly IPaymentServer _paymentServer;
 
-        internal Pump(string id, IPaymentServer paymentServer)
+        public Pump(string id, IPaymentServer paymentServer)
         {
             this.Id = id;
             this._paymentServer = paymentServer;

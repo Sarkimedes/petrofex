@@ -45,7 +45,7 @@ namespace PetrofexSystem.Server.UnitTests
                 PumpId = "Test",
                 TotalAmount = 5
             };
-            string idUsed = string.Empty;
+            var idUsed = string.Empty;
 
             paymentService.ProcessTransaction(transaction, x => idUsed = x);
 
