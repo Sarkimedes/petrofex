@@ -49,11 +49,17 @@
     <Compile Include="IFuelPricesServer.cs" />
     <Compile Include="INotifyPumpActivated.cs" />
     <Compile Include="IPumpActivationServer.cs" />
+    <Compile Include="ITransactionServer.cs" />
     <Compile Include="PriceCache.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransactionService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PetrofexSystem.Common\PetrofexSystem.Common.csproj">
+      <Project>{018ace40-f7e6-4c36-a76a-adc790c1a009}</Project>
+      <Name>PetrofexSystem.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PetrofexSystem.PricesServer.Client\PetrofexSystem.PricesServer.Client.csproj">
       <Project>{9c687d5d-6e6b-4ac5-bf08-cd3b01a9cd10}</Project>
       <Name>PetrofexSystem.PricesServer.Client</Name>

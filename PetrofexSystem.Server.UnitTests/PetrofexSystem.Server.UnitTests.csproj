@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PumpLibrary, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\PumpLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -55,8 +59,13 @@
   <ItemGroup>
     <Compile Include="ServerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransactionServerTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PetrofexSystem.Common\PetrofexSystem.Common.csproj">
+      <Project>{018ace40-f7e6-4c36-a76a-adc790c1a009}</Project>
+      <Name>PetrofexSystem.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PetrofexSystem.Server\PetrofexSystem.Server.csproj">
       <Project>{230f1ac3-a1b2-4042-aeaa-88653fd48a0f}</Project>
       <Name>PetrofexSystem.Server</Name>
