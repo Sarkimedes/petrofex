@@ -42,6 +42,8 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -60,10 +62,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PetrofexSystem.PricesServer.Client\PetrofexSystem.PricesServer.Client.csproj">
+      <Project>{9c687d5d-6e6b-4ac5-bf08-cd3b01a9cd10}</Project>
+      <Name>PetrofexSystem.PricesServer.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PetrofexSystem.Server\PetrofexSystem.Server.csproj">
       <Project>{230f1ac3-a1b2-4042-aeaa-88653fd48a0f}</Project>
       <Name>PetrofexSystem.Server</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

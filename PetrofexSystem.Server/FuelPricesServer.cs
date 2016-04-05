@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PetrofexSystem.PricesServer.Client.FuelSupplyService;
 using PumpLibrary;
 
 namespace PetrofexSystem.Server
@@ -10,13 +11,21 @@ namespace PetrofexSystem.Server
     {
         public IDictionary<FuelType, double> GetFuelPrices()
         {
-            return new Dictionary<FuelType, double>()
+            var client = new FuelSupplyServiceClient();
+            var quote = client.GetFuelPrices(1).QuotePrices;
+
+            var prices = new Dictionary<FuelType, double>();
+
+            foreach (var fuelPrice in quote)
             {
-                {FuelType.Diesel, 5},
-                {FuelType.Hydrogen, 5},
-                {FuelType.LPG, 5},
-                {FuelType.Unleaded, 5}
-            };
+                FuelType fuelType;
+                if (Enum.TryParse(fuelPrice.Name, out fuelType))
+                {
+                    prices.Add(fuelType, fuelPrice.Price);
+                }
+            }
+
+            return prices;
         }
     }
 }
