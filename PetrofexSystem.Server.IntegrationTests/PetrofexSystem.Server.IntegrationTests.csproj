@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B3563632-4E8B-439A-B8F8-4A9C553BF00E}</ProjectGuid>
+    <ProjectGuid>{3EEFE744-609E-4D23-9C47-4336774CC58D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PetrofexSystem.Pumps.UnitTests</RootNamespace>
-    <AssemblyName>PetrofexSystem.Pumps.UnitTests</AssemblyName>
+    <RootNamespace>PetrofexSystem.Server.IntegrationTests</RootNamespace>
+    <AssemblyName>PetrofexSystem.Server.IntegrationTests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -56,25 +56,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="FakeCustomerGenerator.cs" />
-    <Compile Include="FakePriceServer.cs" />
-    <Compile Include="FakeActivationServer.cs" />
-    <Compile Include="FakeTransactionServer.cs" />
-    <Compile Include="PumpTests.cs" />
+    <Compile Include="FuelPricesServerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PetrofexSystem.Common\PetrofexSystem.Common.csproj">
-      <Project>{018ACE40-F7E6-4C36-A76A-ADC790C1A009}</Project>
-      <Name>PetrofexSystem.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PetrofexSystem.Server\PetrofexSystem.Server.csproj">
       <Project>{230f1ac3-a1b2-4042-aeaa-88653fd48a0f}</Project>
       <Name>PetrofexSystem.Server</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PetrofexSystem\PetrofexSystem.Pumps.csproj">
-      <Project>{0cde52b5-743b-4e80-9058-7e156604c21d}</Project>
-      <Name>PetrofexSystem.Pumps</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

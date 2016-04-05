@@ -9,6 +9,14 @@ namespace PetrofexSystem.PricesServer.Client
     {
         static void Main(string[] args)
         {
+            var client = new FuelSupplyService.FuelSupplyServiceClient();
+            var quote = client.GetFuelPrices(1);
+            var prices = quote.QuotePrices;
+            foreach (var fuelPrice in prices)
+            {
+                Console.WriteLine("{0} | {1}", fuelPrice.Name, fuelPrice.Price);
+            }
+            Console.ReadKey();
         }
     }
 }

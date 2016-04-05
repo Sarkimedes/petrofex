@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PetrofexSystem.Common;
+using PetrofexSystem.Server;
 using PumpLibrary;
 
 namespace PetrofexSystem.Pumps.UnitTests

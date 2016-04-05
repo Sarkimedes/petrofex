@@ -52,7 +52,6 @@
   <ItemGroup>
     <Compile Include="CustomerGeneratorAdapter.cs" />
     <Compile Include="ICustomerGenerator.cs" />
-    <Compile Include="IFuelPricesServer.cs" />
     <Compile Include="ITransactionServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pump.cs" />
