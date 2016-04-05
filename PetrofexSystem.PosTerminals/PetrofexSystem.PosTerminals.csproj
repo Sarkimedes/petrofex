@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPumpFactory.cs" />
+    <Compile Include="IStateManager.cs" />
     <Compile Include="PosTerminalService.cs" />
     <Compile Include="Pump.cs" />
     <Compile Include="PumpFactory.cs" />

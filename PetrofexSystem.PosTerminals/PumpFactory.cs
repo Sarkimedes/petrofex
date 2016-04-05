@@ -25,7 +25,7 @@ namespace PetrofexSystem.PosTerminals
                 return pump;
             }
 
-            var addedPump = new Pump(pumpId, this._paymentServer);
+            var addedPump = new Pump(pumpId, this._paymentServer, new PumpStateManager());
             this._pumps.Add(addedPump);
             return addedPump;
         }

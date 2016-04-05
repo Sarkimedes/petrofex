@@ -5,15 +5,18 @@ using System.Text;
 
 namespace PetrofexSystem.PosTerminals.UnitTests
 {
-    class MockPumpFactory : IPumpFactory
+    public class MockPumpFactory : IPumpFactory
     {
-        public List<Pump> pumpsCreated = new List<Pump>(); 
+        public Pump AddedPump { get; private set; }
+
+        public void AddPump(Pump pump)
+        {
+            this.AddedPump = pump;
+        }
 
         public Pump GetPumpById(string id)
         {
-            var pump = new Pump(id, new FakePaymentServer());
-            pumpsCreated.Add(pump);
-            return pump;
+            return this.AddedPump ?? new Pump(id, new FakePaymentServer(), new FakeStateManager());
         }
     }
 }

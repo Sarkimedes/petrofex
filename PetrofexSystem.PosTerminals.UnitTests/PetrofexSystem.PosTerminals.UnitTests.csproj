@@ -57,6 +57,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="FakePaymentServer.cs" />
+    <Compile Include="FakeStateManager.cs" />
     <Compile Include="MockPumpFactory.cs" />
     <Compile Include="PosTerminalServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

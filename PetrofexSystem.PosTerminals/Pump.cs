@@ -12,14 +12,14 @@ namespace PetrofexSystem.PosTerminals
     /// </summary>
     public class Pump
     {
-        private readonly PumpStateManager _stateManager;
+        private readonly IStateManager _stateManager;
         private readonly IPaymentServer _paymentServer;
 
-        public Pump(string id, IPaymentServer paymentServer)
+        public Pump(string id, IPaymentServer paymentServer, IStateManager stateManager)
         {
             this.Id = id;
             this._paymentServer = paymentServer;
-            this._stateManager = new PumpStateManager();
+            this._stateManager = stateManager;
             this._stateManager.SetState(PumpState.CustomerWaiting);
         }
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PetrofexSystem.PosTerminals
 {
-    public class PumpStateManager
+    public class PumpStateManager : IStateManager
     {
         public PumpStateManager()
         {
