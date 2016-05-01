@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Server.UnitT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Server.IntegrationTests", "PetrofexSystem.Server.IntegrationTests\PetrofexSystem.Server.IntegrationTests.csproj", "{3EEFE744-609E-4D23-9C47-4336774CC58D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Messaging", "PetrofexSystem.Messaging\PetrofexSystem.Messaging.csproj", "{B460AB33-5FD3-4C95-B000-7BD8D0E1A4ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Messaging.UnitTests", "PetrofexSystem.Messaging.UnitTests\PetrofexSystem.Messaging.UnitTests.csproj", "{039AFC86-8217-422F-9460-9A20CBB46E11}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,14 @@ Global
 		{3EEFE744-609E-4D23-9C47-4336774CC58D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EEFE744-609E-4D23-9C47-4336774CC58D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EEFE744-609E-4D23-9C47-4336774CC58D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B460AB33-5FD3-4C95-B000-7BD8D0E1A4ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B460AB33-5FD3-4C95-B000-7BD8D0E1A4ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B460AB33-5FD3-4C95-B000-7BD8D0E1A4ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B460AB33-5FD3-4C95-B000-7BD8D0E1A4ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{039AFC86-8217-422F-9460-9A20CBB46E11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{039AFC86-8217-422F-9460-9A20CBB46E11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{039AFC86-8217-422F-9460-9A20CBB46E11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{039AFC86-8217-422F-9460-9A20CBB46E11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
