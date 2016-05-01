@@ -47,13 +47,19 @@
   <ItemGroup>
     <Compile Include="FuelPricesServer.cs" />
     <Compile Include="IFuelPricesServer.cs" />
-    <Compile Include="INotifyPumpActivated.cs" />
     <Compile Include="IPaymentDatabase.cs" />
     <Compile Include="IPaymentServer.cs" />
     <Compile Include="IPumpActivationServer.cs" />
+    <Compile Include="IPumpFactory.cs" />
+    <Compile Include="IStateManager.cs" />
     <Compile Include="ITransactionServer.cs" />
     <Compile Include="PaymentService.cs" />
+    <Compile Include="PosTerminalService.cs" />
     <Compile Include="PriceCache.cs" />
+    <Compile Include="Pump.cs" />
+    <Compile Include="PumpFactory.cs" />
+    <Compile Include="PumpState.cs" />
+    <Compile Include="PumpStateManager.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransactionService.cs" />

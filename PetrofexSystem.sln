@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Pumps", "PetrofexSystem\PetrofexSystem.Pumps.csproj", "{0CDE52B5-743B-4E80-9058-7E156604C21D}"
 EndProject
@@ -10,10 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.PricesServer.Client", "PetrofexSystem.PricesServer.Client\PetrofexSystem.PricesServer.Client.csproj", "{9C687D5D-6E6B-4AC5-BF08-CD3B01A9CD10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Pumps.TestApp", "PetrofexSystem.Pumps.TestApp\PetrofexSystem.Pumps.TestApp.csproj", "{047B91F2-01D1-4F85-B608-38C383B2F222}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.PosTerminals", "PetrofexSystem.PosTerminals\PetrofexSystem.PosTerminals.csproj", "{EEA0C771-22DE-46A0-A2CF-80EB134A73DE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.PosTerminals.UnitTests", "PetrofexSystem.PosTerminals.UnitTests\PetrofexSystem.PosTerminals.UnitTests.csproj", "{C343EB07-67E8-4DBD-9565-DD4D69431B60}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Common", "PetrofexSystem.Common\PetrofexSystem.Common.csproj", "{018ACE40-F7E6-4C36-A76A-ADC790C1A009}"
 EndProject
@@ -45,14 +41,6 @@ Global
 		{047B91F2-01D1-4F85-B608-38C383B2F222}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{047B91F2-01D1-4F85-B608-38C383B2F222}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{047B91F2-01D1-4F85-B608-38C383B2F222}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EEA0C771-22DE-46A0-A2CF-80EB134A73DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EEA0C771-22DE-46A0-A2CF-80EB134A73DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EEA0C771-22DE-46A0-A2CF-80EB134A73DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EEA0C771-22DE-46A0-A2CF-80EB134A73DE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C343EB07-67E8-4DBD-9565-DD4D69431B60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C343EB07-67E8-4DBD-9565-DD4D69431B60}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C343EB07-67E8-4DBD-9565-DD4D69431B60}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C343EB07-67E8-4DBD-9565-DD4D69431B60}.Release|Any CPU.Build.0 = Release|Any CPU
 		{018ACE40-F7E6-4C36-A76A-ADC790C1A009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{018ACE40-F7E6-4C36-A76A-ADC790C1A009}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{018ACE40-F7E6-4C36-A76A-ADC790C1A009}.Release|Any CPU.ActiveCfg = Release|Any CPU

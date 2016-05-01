@@ -3,28 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using PetrofexSystem.PosTerminals;
 
 namespace PetrofexSystem.Server
 {
-    public class Server : IPumpActivationServer, INotifyPumpActivated
+    public class Server : IPumpActivationServer
     {
+        private readonly IPumpFactory _factory;
+
+        public Server(IPumpFactory factory)
+        {
+            if (factory == null)
+            {
+                throw new ArgumentNullException("factory");
+            }
+            this._factory = factory;
+        }
+
         public void RequestActivation(string pumpId)
         {
-            if (PumpActivationRequested != null)
+            var pump = this._factory.GetPumpById(pumpId);
+            if (pump != null)
             {
-                this.PumpActivationRequested(pumpId);
+                pump.Activate();
             }
         }
 
         public void RequestDeactivation(string pumpId)
         {
-            if (PumpDeactivationRequested != null)
+            var pump = this._factory.GetPumpById(pumpId);
+            if (pump != null)
             {
-                this.PumpDeactivationRequested(pumpId);
+                pump.Deactivate();
             }
         }
-
-        public event Action<string> PumpActivationRequested;
-        public event Action<string> PumpDeactivationRequested;
     }
 }

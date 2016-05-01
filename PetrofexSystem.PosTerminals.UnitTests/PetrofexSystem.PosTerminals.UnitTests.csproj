@@ -69,10 +69,6 @@
       <Project>{018ace40-f7e6-4c36-a76a-adc790c1a009}</Project>
       <Name>PetrofexSystem.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PetrofexSystem.PosTerminals\PetrofexSystem.PosTerminals.csproj">
-      <Project>{eea0c771-22de-46a0-a2cf-80eb134a73de}</Project>
-      <Name>PetrofexSystem.PosTerminals</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PetrofexSystem.Server\PetrofexSystem.Server.csproj">
       <Project>{230f1ac3-a1b2-4042-aeaa-88653fd48a0f}</Project>
       <Name>PetrofexSystem.Server</Name>
