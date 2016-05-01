@@ -16,6 +16,7 @@ namespace PetrofexSystem
         private readonly IFuelPricesServer _fuelPricesServer;
         private readonly ITransactionServer _transactionServer;
         private IDictionary<FuelType, double> _fuelPrices;
+       
 
         public string PumpId { get { return this._pumpId; } }
 
@@ -63,7 +64,6 @@ namespace PetrofexSystem
                 FuelType = customerReadyEventArgs.SelectedFuel,
                 LitresPumped = 0,
                 TotalAmount = 0,
-                IsPaid = false
             };
         }
 

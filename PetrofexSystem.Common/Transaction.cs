@@ -41,13 +41,6 @@ namespace PetrofexSystem.Common
         /// </value>
         public double TotalAmount { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is paid.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is paid; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsPaid { get; set; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -57,7 +50,7 @@ namespace PetrofexSystem.Common
         /// </returns>
         public override string ToString()
         {
-            return string.Format("Pump Id: {3} | Fuel type: {0} | Litres pumped: {1} | Total Spent: {2} | Has been paid: {4}", this.FuelType, this.LitresPumped, this.TotalAmount, this.PumpId, this.IsPaid);
+            return string.Format("Pump Id: {3} | Fuel type: {0} | Litres pumped: {1} | Total Spent: {2}", this.FuelType, this.LitresPumped, this.TotalAmount, this.PumpId);
         }
     }
 }

@@ -21,7 +21,6 @@ namespace PetrofexSystem.Server.UnitTests
             var transaction = new Transaction()
             {
                 FuelType = FuelType.Diesel,
-                IsPaid = true,
                 LitresPumped = 1,
                 PumpId = "Test",
                 TotalAmount = 5
@@ -40,7 +39,6 @@ namespace PetrofexSystem.Server.UnitTests
             var transaction = new Transaction()
             {
                 FuelType = FuelType.Diesel,
-                IsPaid = true,
                 LitresPumped = 1,
                 PumpId = "Test",
                 TotalAmount = 5

@@ -66,7 +66,7 @@ namespace PetrofexSystem.Pumps.UnitTests
             pump.Activate();
             customerGenerator.InvokePumpProgress(new PumpProgressEventArgs(1));
 
-            Assert.AreEqual(new Transaction() {PumpId = pump.PumpId, FuelType = FuelType.Diesel, LitresPumped = 1, TotalAmount = 1, IsPaid = false}, pump.CurrentTransaction);
+            Assert.AreEqual(new Transaction() {PumpId = pump.PumpId, FuelType = FuelType.Diesel, LitresPumped = 1, TotalAmount = 1}, pump.CurrentTransaction);
         }
 
         [TestMethod]
@@ -88,7 +88,6 @@ namespace PetrofexSystem.Pumps.UnitTests
                 FuelType = FuelType.Hydrogen,
                 LitresPumped = 1,
                 TotalAmount = priceServer.GetFuelPrices()[FuelType.Hydrogen],
-                IsPaid = false
             };
             Assert.AreEqual(expectedTransaction, pump.CurrentTransaction);
         }
@@ -113,7 +112,6 @@ namespace PetrofexSystem.Pumps.UnitTests
                 FuelType = FuelType.Unleaded,
                 LitresPumped = 3,
                 TotalAmount = 9,
-                IsPaid = false
             };
             Assert.AreEqual(expectedTransaction, pump.CurrentTransaction);
         }
@@ -151,7 +149,6 @@ namespace PetrofexSystem.Pumps.UnitTests
                 FuelType = FuelType.Unleaded,
                 LitresPumped = 1,
                 TotalAmount = 3,
-                IsPaid = false
             };
             Assert.AreEqual(expectedTransaction, transactionServer.LastTransaction);
         }

@@ -48,6 +48,7 @@ namespace PetrofexSystem.PosTerminals
 
         public void Deactivate()
         {
+            this.TransactionPaid = false;
             this._stateManager.SetState(PumpState.AwaitingPayment);
         }
 
@@ -65,9 +66,11 @@ namespace PetrofexSystem.PosTerminals
                 FuelType = this.CurrentTransaction.FuelType,
                 LitresPumped = this.CurrentTransaction.LitresPumped,
                 TotalAmount = this.CurrentTransaction.TotalAmount,
-                IsPaid = true
             };
+            this.TransactionPaid = true;
             this._stateManager.SetState(PumpState.Inactive);
         }
+
+        public bool TransactionPaid { get; set; }
     }
 }

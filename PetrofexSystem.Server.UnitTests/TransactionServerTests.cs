@@ -18,7 +18,6 @@ namespace PetrofexSystem.Server.UnitTests
             {
                 FuelType = FuelType.Hydrogen,
                 LitresPumped = 1,
-                IsPaid = false,
                 PumpId = "test",
                 TotalAmount = 5
             };

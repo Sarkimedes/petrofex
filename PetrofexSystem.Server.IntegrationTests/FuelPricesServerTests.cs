@@ -25,7 +25,7 @@ namespace PetrofexSystem.Server.IntegrationTests
             Assert.IsTrue(fuelPrices.ContainsKey(FuelType.Hydrogen));
             Assert.IsTrue(fuelPrices.ContainsKey(FuelType.LPG));
             Assert.IsTrue(fuelPrices.ContainsKey(FuelType.Unleaded));
-            Assert.AreEqual(fuelPrices[FuelType.Diesel], wcfQuote.Where(x => x.Name == FuelType.Diesel.ToString()).FirstOrDefault().Price);
+            Assert.AreEqual(fuelPrices[FuelType.Diesel], wcfQuote.FirstOrDefault(x => x.Name == FuelType.Diesel.ToString()).Price);
         }
 
         [TestMethod]

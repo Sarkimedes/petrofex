@@ -56,7 +56,6 @@ namespace PetrofexSystem.PosTerminals.UnitTests
                     FuelType = FuelType.Diesel,
                     LitresPumped = 1,
                     TotalAmount = 1,
-                    IsPaid = false
                 },
                 transaction);
         }
@@ -90,7 +89,6 @@ namespace PetrofexSystem.PosTerminals.UnitTests
                 FuelType = FuelType.Diesel,
                 LitresPumped = 2,
                 TotalAmount = 2,
-                IsPaid = false
             };
             Assert.AreEqual(expectedTransaction, latestTransaction);
         }
@@ -133,7 +131,6 @@ namespace PetrofexSystem.PosTerminals.UnitTests
             pump.HandlePumpProgress(new Transaction()
             {
                 FuelType = FuelType.Hydrogen,
-                IsPaid = false,
                 LitresPumped = 1,
                 TotalAmount = 2,
                 PumpId = pumpId
@@ -174,7 +171,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
         }
 
         [TestMethod]
-        public void HandlePaymentAcknowledged_ForPumpWithValidPayment_UpdatesCurrentTransactionToPaid()
+        public void HandlePaymentAcknowledged_ForPumpWithValidPayment_UpdatesPaymentFinished()
         {
             var pump = this.CreateNewPump();
             pump.Activate();
@@ -184,7 +181,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
 
             pump.HandlePaymentAcknowledged();
 
-            Assert.IsTrue(pump.CurrentTransaction.IsPaid);
+            Assert.IsTrue(pump.TransactionPaid);
         }
     }
 }
