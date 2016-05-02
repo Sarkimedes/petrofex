@@ -7,6 +7,7 @@ using System.Text;
 namespace PetrofexSystem.Messaging
 {
     [Serializable]
+    [DataContract]
     public class Message
     {
         public Message(MessageType messageType, byte[] payload)
@@ -15,7 +16,10 @@ namespace PetrofexSystem.Messaging
             this.Payload = payload;
         }
 
+        [DataMember]
         public MessageType MessageType { get; private set; }
+
+        [DataMember]
         public byte[] Payload { get; private set; }
 
         public byte[] ToByteArray()

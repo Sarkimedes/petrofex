@@ -7,7 +7,7 @@ using System.Text;
 
 namespace PetrofexSystem.Messaging
 {
-    class MessageEncryption
+    public class MessageEncryption
     {
         public byte[] Encrypt(string dataToEncrypt, byte[] key)
         {

@@ -4,8 +4,8 @@ namespace PetrofexSystem.Messaging
 {
     public interface IMessagingClient
     {
-        void Connect(string host, int port, Action<string> connectionEstablishedCallback);
-        void SendTransaction(Message message);
+        void Connect(Func<byte[]> connectionEstablishedCallback);
+        void SendMessage(Message message);
         void Disconnect();
     }
 }

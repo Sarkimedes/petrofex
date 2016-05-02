@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PetrofexSystem.Messaging
 {
-    class MessageConverter
+    public class MessageConverter
     {
         public Message FromByteArray(byte[] messageBytes)
         {
