@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IClient.cs" />
+    <Compile Include="IMessagingClient.cs" />
     <Compile Include="IMessageListener.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageConverter.cs" />
