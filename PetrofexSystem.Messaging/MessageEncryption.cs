@@ -30,7 +30,6 @@ namespace PetrofexSystem.Messaging
 
         public string Decrypt(byte[] encryptedData, byte[] key)
         {
-            string data = string.Empty;
             using (var encryptionAlgorithm = new DESCryptoServiceProvider())
             {
                 var decryptor = encryptionAlgorithm.CreateDecryptor(key, key);
@@ -40,12 +39,11 @@ namespace PetrofexSystem.Messaging
                     {
                         using (var reader = new StreamReader(cryptoStream))
                         {
-                            data = reader.ReadToEnd();
+                            return reader.ReadToEnd();
                         }
                     }
                 }
             }
-            return data;
         }
     }
 }
