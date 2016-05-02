@@ -13,11 +13,22 @@ namespace PetrofexSystem.Messaging
         {
             this.MessageType = messageType;
             this.Payload = payload;
-            this.Timestamp = DateTime.Now;
         }
 
         public MessageType MessageType { get; private set; }
         public string Payload { get; private set; }
-        internal DateTime Timestamp { get; private set; }
+
+        public byte[] ToByteArray()
+        {
+            var start = new byte[] { 0, 0, 0 };
+            var messageType = (byte) this.MessageType;
+            var length = Convert.ToInt16(this.Payload.Length);
+            // Convert length to bytes
+            var lengthBytes = BitConverter.GetBytes(length);
+
+            var payloadBytes = Encoding.UTF8.GetBytes(this.Payload);
+
+            return start.Concat(new[] {messageType}).Concat(lengthBytes).Concat(payloadBytes).ToArray();
+        }
     }
 }

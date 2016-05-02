@@ -18,7 +18,6 @@ namespace PetrofexSystem.Messaging
         public void Put(Message message)
         {
             this._messages.Add(message);
-            this._messages.Sort((x, y) => x.Timestamp.CompareTo(y.Timestamp));
         }
             
         /// <summary>

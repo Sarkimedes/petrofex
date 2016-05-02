@@ -47,8 +47,8 @@
     <Compile Include="MessageQueue.cs" />
     <Compile Include="MessageQueueClient.cs" />
     <Compile Include="IMessageSerializer.cs" />
-    <Compile Include="MessageSerializer.cs" />
     <Compile Include="MessageType.cs" />
+    <Compile Include="MessageWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
