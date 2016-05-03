@@ -33,5 +33,11 @@ namespace PetrofexSystem.Messaging
 
             return start.Concat(new[] {messageType}).Concat(lengthBytes).Concat(this.Payload).ToArray();
         }
+
+        public override string ToString()
+        {
+            return String.Format("Type: {0} | Content: {1}", Enum.GetName(typeof (MessageType), (int) this.MessageType),
+                Encoding.UTF8.GetString(this.Payload));
+        }
     }
 }

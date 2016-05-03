@@ -57,7 +57,6 @@
     <Compile Include="ICustomerGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pump.cs" />
-    <Compile Include="PumpMessagingClient.cs" />
     <Compile Include="Service References\MessagingService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

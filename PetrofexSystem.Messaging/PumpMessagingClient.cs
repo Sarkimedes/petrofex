@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Remoting.Channels.Tcp;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using PetrofexSystem.Messaging;
 
 namespace PetrofexSystem
 {
-    internal class PumpMessagingClient : IMessagingClient
+    internal class PumpMessagingClient
     {
         private readonly string _id;
         private byte[] _sharedKey;
@@ -21,38 +23,42 @@ namespace PetrofexSystem
             this._id = id;
         }
 
-        public void Connect(Func<byte[]> connectionEstablishedCallback)
+        public void Connect(Action<byte[]> connectionEstablishedCallback)
         {
             var serverPublicKey = this.GetServerPublicKey();
             var clientPublicKey = new DESCryptoServiceProvider().Key;
             var encryptedSharedKey = this.GetSharedSymmetricKey(clientPublicKey);
-            var encrytor = new MessageEncryption();
-            this._sharedKey = Encoding.UTF8.GetBytes(encrytor.Decrypt(encryptedSharedKey, clientPublicKey));
-            var encryptedId = encrytor.Encrypt(this._id, this._sharedKey);
+            var encryption = new MessageEncryption();
+            this._sharedKey = Encoding.UTF8.GetBytes(encryption.Decrypt(encryptedSharedKey, clientPublicKey));
+            var encryptedId = encryption.Encrypt(this._id, this._sharedKey);
             var connectedMessage = new Message(MessageType.Connected, encryptedId);
-            GetResponseFromServer(connectedMessage);
+            this.SendToServer(connectedMessage, message =>
+            {
+                connectionEstablishedCallback(message.Payload);
+            });
         }
 
         private byte[] GetServerPublicKey()
         {
             var encodedId = Encoding.UTF8.GetBytes(this._id);
             var helloMessage = new Message(MessageType.Hello, encodedId);
-            return this.GetResponseFromServer(helloMessage).Payload;
+            byte[] publicKey = null;
+            this.SendToServer(helloMessage, message => publicKey = message.Payload);
+            return publicKey;
         }
 
         private byte[] GetSharedSymmetricKey(byte[] clientKey)
         {
             var encodedId = Encoding.UTF8.GetBytes(this._id);
             var message = new Message(MessageType.Start, encodedId.Concat(clientKey).ToArray());
-            var response = this.GetResponseFromServer(message);
-            return response.Payload;
+            byte[] key = null;
+            this.SendToServer(message, resultMessage => key = message.Payload);
+            return key;
         }
 
-        private Message GetResponseFromServer(Message message)
+        private void SendToServer(Message message, Action<Message> onReceiveResult)
         {
-            var client = new MessagingService.MessagingServiceClient();
-            var response = client.SendMessage(message.ToByteArray());
-            return new MessageConverter().FromByteArray(response);
+            throw new NotImplementedException();
         }
         
 
