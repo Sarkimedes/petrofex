@@ -31,31 +31,38 @@ namespace PetrofexSystem.Messaging
                     this.SendMessage(pubKeyMessage, client);
                     break;
                 case MessageType.Start:
-                    // The first two bytes of the message body are the identifier length
-                    // Small byte is placed first
-                    Debug.WriteLine(string.Format("Server payload: {0}", WriteByteArray(message.Payload)));
-                    var lengthBytes = message.Payload.Take(2);
-                    var identifierLength = BitConverter.IsLittleEndian
-                        ? BitConverter.ToInt16(lengthBytes.ToArray(), 0)
-                        : BitConverter.ToInt16(lengthBytes.Reverse().ToArray(), 0);
-                    // Following that is the identifier
-                    var identifierBytes = message.Payload.Skip(2).Take(identifierLength);
-                    // The rest of the body is the key
-                    var clientKeyBytes = message.Payload.Skip(2 + identifierLength);
-                    // Add a new connection to the pool. Any further data sending will be done via this
-                    var connection =
-                        this._connectionPool.GetConnection(Encoding.UTF8.GetString(identifierBytes.ToArray()), client);
-                    var startOkMessage = this.CreateStartOkMessage(connection.SymmetricKey, clientKeyBytes.ToArray());
-                    Debug.WriteLine(string.Format("Sent key: {0}", WriteByteArray(startOkMessage.Payload)));
-                    this.SendMessage(startOkMessage, client);
+                    this.HandleStartMessage(message, client);
                     break;
                 case MessageType.Connected:
                     var connectedConnection = this._connectionPool.GetConnection(client);
-                    connectedConnection.SendEncryptedMessage(new Message(MessageType.Ack, Encoding.UTF8.GetBytes(connectedConnection.ClientId)));
+                    connectedConnection.SendEncryptedMessage(new Message(MessageType.Ack, Encoding.UTF8.GetBytes(connectedConnection.ClientId)),
+                        m => { });
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }            
+        }
+
+        private void HandleStartMessage(Message message, TcpClient client)
+        {
+// The first two bytes of the message body are the identifier length
+            // Small byte is placed first
+            Debug.WriteLine(string.Format("Server payload: {0}", WriteByteArray(message.Payload)));
+            var lengthBytes = message.Payload.Take(2);
+            var identifierLength = BitConverter.IsLittleEndian
+                ? BitConverter.ToInt16(lengthBytes.ToArray(), 0)
+                : BitConverter.ToInt16(lengthBytes.Reverse().ToArray(), 0);
+            // Following that is the identifier
+            var identifierBytes = message.Payload.Skip(2).Take(identifierLength);
+            // The rest of the body is the key
+            var clientKeyBytes = message.Payload.Skip(2 + identifierLength);
+            // Add a new connection to the pool. Any further data sending will be done via this
+            var connection =
+                this._connectionPool.GetConnection(Encoding.UTF8.GetString(identifierBytes.ToArray()), client);
+            var startOkMessage = this.CreateStartOkMessage(connection.SymmetricKey, clientKeyBytes.ToArray());
+            Debug.WriteLine(string.Format("Sent key: {0}", WriteByteArray(startOkMessage.Payload)));
+            this.SendMessage(startOkMessage, client);
+            return;
         }
 
         private void SendMessage(Message message, TcpClient client)

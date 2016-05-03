@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,10 +14,11 @@ using PetrofexSystem.Messaging;
 
 namespace PetrofexSystem
 {
-    public class PumpMessagingClient
+    public class PumpMessagingClient : IMessagingClient
     {
         private readonly string _id;
-        private TcpMessagingClient _client;
+        private readonly TcpMessagingClient _client;
+        private byte[] _sharedKey;
 
         public PumpMessagingClient(string id)
         {
@@ -24,7 +26,7 @@ namespace PetrofexSystem
             this._client = new TcpMessagingClient(IPAddress.Loopback.ToString(), 5000);
         }
 
-        public void Connect(Action<byte[]> connectionEstablishedCallback)
+        public void Connect(Action<Message> connectionEstablishedCallback)
         {
             this.SendHelloMessage(message =>
             {
@@ -35,16 +37,32 @@ namespace PetrofexSystem
                     var encryptedSharedKey = encryptedSharedKeyMessage.Payload;
                     Debug.WriteLine(string.Format("Received shared key: {0}", WriteByteArray(encryptedSharedKey)));
                     var encryption = new MessageEncryption();
-                    var sharedKey = encryption.DecryptBytes(encryptedSharedKey, clientPublicKey);
-                    var encryptedId = encryption.Encrypt(this._id, sharedKey);
+                    this._sharedKey = encryption.DecryptBytes(encryptedSharedKey, clientPublicKey);
+                    var encryptedId = encryption.Encrypt(this._id, this._sharedKey);
                     var connectedMessage = new Message(MessageType.Connected, encryptedId);
-                    this.SendToServer(connectedMessage, connectionAcknowledgedMessage =>
-                    {
-                        connectionEstablishedCallback(connectionAcknowledgedMessage.Payload);
-                    });
+                    this.SendToServer(connectedMessage, connectionEstablishedCallback);
                 });
 
             });
+        }
+
+        public void SendMessage(Message message, Action<Message> onCompleteCallback)
+        {
+            this._client.SendMessage(message, onCompleteCallback);
+        }
+
+        public void SendMessageEncrypted(Message message, Action<Message> onCompleteCallback)
+        {
+            var body = message.Payload;
+            var encryptor = new MessageEncryption();
+            var encrypted = encryptor.EncryptBytes(body, this._sharedKey);
+            this._client.SendMessage(new Message(message.MessageType, encrypted), onCompleteCallback);
+        }
+
+        public void Disconnect(Action<Message> onCompleteCallback)
+        {
+            var disconnectMessage = new Message(MessageType.Disconnect, new byte[0]);
+            this._client.SendMessage(disconnectMessage, onCompleteCallback);
         }
 
         private void SendHelloMessage(Action<Message> doneCallback)
@@ -70,17 +88,6 @@ namespace PetrofexSystem
             this._client.SendMessage(message, onReceiveResult);
         }
         
-
-        public void SendMessage(Message message)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Disconnect()
-        {
-            throw new NotImplementedException();
-        }
-
         private static string WriteByteArray(byte[] bytes)
         {
             var sb = new StringBuilder();

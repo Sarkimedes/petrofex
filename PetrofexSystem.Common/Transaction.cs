@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Security.Permissions;
 using System.Text;
 using PumpLibrary;
 
 namespace PetrofexSystem.Common
 {
+    [Serializable]
+    [DataContract]
     public struct Transaction
     {
         /// <summary>
@@ -15,7 +18,9 @@ namespace PetrofexSystem.Common
         /// <value>
         /// The pump identifier.
         /// </value>
+        [DataMember]
         public string PumpId { get; set; }
+
 
         /// <summary>
         /// Gets or sets the type of the fuel.
@@ -23,7 +28,9 @@ namespace PetrofexSystem.Common
         /// <value>
         /// The type of the fuel.
         /// </value>
+        [DataMember]
         public FuelType FuelType { get; set; }
+
 
         /// <summary>
         /// Gets or sets the litres pumped.
@@ -31,6 +38,7 @@ namespace PetrofexSystem.Common
         /// <value>
         /// The litres pumped.
         /// </value>
+        [DataMember]
         public double LitresPumped { get; set; }
 
         /// <summary>
@@ -39,6 +47,7 @@ namespace PetrofexSystem.Common
         /// <value>
         /// The total amount.
         /// </value>
+        [DataMember]
         public double TotalAmount { get; set; }
 
 

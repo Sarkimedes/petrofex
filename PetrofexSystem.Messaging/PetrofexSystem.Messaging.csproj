@@ -50,10 +50,9 @@
     <Compile Include="Message.cs" />
     <Compile Include="MessageConverter.cs" />
     <Compile Include="MessageEncryption.cs" />
-    <Compile Include="MessageQueue.cs" />
-    <Compile Include="MessageQueueClient.cs" />
     <Compile Include="IMessageSerializer.cs" />
     <Compile Include="MessageType.cs" />
+    <Compile Include="ConnectionMessageHandler.cs" />
     <Compile Include="ServerMessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PumpMessagingClient.cs" />

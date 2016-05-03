@@ -26,14 +26,15 @@ namespace PetrofexSystem
             IPumpActivationServer pumpActivationServer,
             ICustomerGenerator customerGenerator,
             IFuelPricesServer fuelPricesServer,
-            ITransactionServer transactionServer)
+            ITransactionServer transactionServer, 
+            string id)
         {
             this._pumpActivationServer = pumpActivationServer;
             this._customerGenerator = customerGenerator;
             this._fuelPricesServer = fuelPricesServer;
             this._transactionServer = transactionServer;
 
-            this._pumpId = Guid.NewGuid().ToString();
+            this._pumpId = id;
             this._customerGenerator.CustomerReady += CustomerGeneratorOnCustomerReady;
             this._customerGenerator.PumpProgress += CustomerGeneratorOnPumpProgress;
             this._customerGenerator.PumpingFinished += CustomerGeneratorOnPumpingFinished;

@@ -55,23 +55,16 @@
   <ItemGroup>
     <Compile Include="CustomerGeneratorAdapter.cs" />
     <Compile Include="ICustomerGenerator.cs" />
+    <Compile Include="IPumpActivationServer.cs" />
+    <Compile Include="IPumpServiceLocator.cs" />
+    <Compile Include="ITransactionServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pump.cs" />
-    <Compile Include="Service References\MessagingService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
+    <Compile Include="PumpActivationServer.cs" />
+    <Compile Include="TransactionServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MessagingService\service.wsdl" />
-    <None Include="Service References\MessagingService\service.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MessagingService\service1.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -88,24 +81,6 @@
       <Project>{230f1ac3-a1b2-4042-aeaa-88653fd48a0f}</Project>
       <Name>PetrofexSystem.Server</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\MessagingService\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\MessagingService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\MessagingService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\MessagingService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

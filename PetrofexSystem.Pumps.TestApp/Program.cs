@@ -18,10 +18,10 @@ namespace PetrofexSystem.Pumps.TestApp
             var fuelPricesServer = new LocalFuelPricesServer();
             var transactionServer = new LocalTransactionServer();
             
-            var pump = new Pump(activationServer, adapter, fuelPricesServer, transactionServer);
+            var pump = new Pump(activationServer, adapter, fuelPricesServer, transactionServer, Guid.NewGuid().ToString());
             activationServer.RegisterPump(pump);
 
-            var timer = new Timer(new TimerCallback(UpdateDisplay), pump, 0, 50);
+            var timer = new Timer(UpdateDisplay, pump, 0, 50);
             Console.ReadKey();
         }
 

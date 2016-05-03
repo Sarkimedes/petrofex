@@ -7,7 +7,7 @@ using PetrofexSystem.PosTerminals;
 
 namespace PetrofexSystem.Server
 {
-    public class Server : IPumpActivationServer
+    public class Server
     {
         private readonly IPumpFactory _factory;
 

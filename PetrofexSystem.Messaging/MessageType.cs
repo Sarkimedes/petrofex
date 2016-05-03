@@ -9,7 +9,10 @@
         Connected = 5,
         Disconnect = 6,
         Error = 7,
-        Ack = 16
+        Ack = 16,
+        ActivationRequest = 17,
+        DeactivationRequest = 18,
+        Transaction = 19
     }
 
 }
