@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using PetrofexSystem.Common;
 
 namespace PetrofexSystem.Messaging
 {
@@ -21,6 +22,10 @@ namespace PetrofexSystem.Messaging
             this._serverKey = new DESCryptoServiceProvider().Key;
             this._connectionPool = new ConnectionPool();
         }
+
+        public event Action<string> PumpActivated;
+        public event Action<string> PumpDeactivated;
+        public event Action<Transaction> PumpProgress;
 
         public void RespondToMessage(Message message, TcpClient client)
         {
@@ -36,16 +41,23 @@ namespace PetrofexSystem.Messaging
                 case MessageType.Connected:
                     var connectedConnection = this._connectionPool.GetConnection(client);
                     connectedConnection.SendEncryptedMessage(new Message(MessageType.Ack, Encoding.UTF8.GetBytes(connectedConnection.ClientId)),
-                        m => { });
+                        m =>
+                        {
+                            var handler = new ConnectionMessageHandler(connectedConnection);
+                            handler.PumpActivated += this.PumpActivated;
+                            handler.PumpDeactivated += this.PumpDeactivated;
+                            handler.PumpProgress += this.PumpProgress;
+                            handler.HandleMessage(m);
+                        });
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
-            }            
+            }
         }
 
         private void HandleStartMessage(Message message, TcpClient client)
         {
-// The first two bytes of the message body are the identifier length
+            // The first two bytes of the message body are the identifier length
             // Small byte is placed first
             Debug.WriteLine(string.Format("Server payload: {0}", WriteByteArray(message.Payload)));
             var lengthBytes = message.Payload.Take(2);
@@ -62,7 +74,6 @@ namespace PetrofexSystem.Messaging
             var startOkMessage = this.CreateStartOkMessage(connection.SymmetricKey, clientKeyBytes.ToArray());
             Debug.WriteLine(string.Format("Sent key: {0}", WriteByteArray(startOkMessage.Payload)));
             this.SendMessage(startOkMessage, client);
-            return;
         }
 
         private void SendMessage(Message message, TcpClient client)

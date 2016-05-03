@@ -49,6 +49,10 @@
       <Project>{B460AB33-5FD3-4C95-B000-7BD8D0E1A4ED}</Project>
       <Name>PetrofexSystem.Messaging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PetrofexSystem.Server\PetrofexSystem.Server.csproj">
+      <Project>{230f1ac3-a1b2-4042-aeaa-88653fd48a0f}</Project>
+      <Name>PetrofexSystem.Server</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

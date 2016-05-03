@@ -58,6 +58,12 @@
     <Compile Include="PumpMessagingClient.cs" />
     <Compile Include="TcpMessagingClient.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PetrofexSystem.Common\PetrofexSystem.Common.csproj">
+      <Project>{018ACE40-F7E6-4C36-A76A-ADC790C1A009}</Project>
+      <Name>PetrofexSystem.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

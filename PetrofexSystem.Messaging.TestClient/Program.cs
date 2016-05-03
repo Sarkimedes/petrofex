@@ -20,7 +20,15 @@ namespace PetrofexSystem.Messaging.TestClient
                 key = Console.ReadKey();
                 var client = new PumpMessagingClient("Test");
                 Console.WriteLine("Attempting to connect");
-                client.Connect(_ => Console.WriteLine("Successfully connected"));
+                client.Connect(_ =>
+                {
+                    Console.WriteLine("Successfully connected");
+                    client.SendMessageEncrypted(
+                    new Message(MessageType.ActivationRequest, Encoding.UTF8.GetBytes("test".ToCharArray())),
+                    m => Console.WriteLine(m));
+                });
+                
+                //client.Disconnect(_ => Console.WriteLine("Successfully disconnected"));
 
             } while (key.Key != ConsoleKey.Escape);
         }

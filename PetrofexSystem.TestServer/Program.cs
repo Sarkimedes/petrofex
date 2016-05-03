@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using PetrofexSystem.Messaging;
+using PetrofexSystem.Server;
 
 namespace PetrofexSystem.TestServer
 {
@@ -17,6 +18,10 @@ namespace PetrofexSystem.TestServer
         private static readonly ServerMessageHandler Handler = new ServerMessageHandler();
         static void Main(string[] args)
         {
+
+            // Set up services
+
+
             var listener = new TcpListener(IPAddress.Loopback, 5000);
             listener.Start();
             while (true)

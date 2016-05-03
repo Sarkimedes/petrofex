@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Pumps", "PetrofexSystem\PetrofexSystem.Pumps.csproj", "{0CDE52B5-743B-4E80-9058-7E156604C21D}"
 EndProject
@@ -23,9 +23,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Messaging", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Messaging.UnitTests", "PetrofexSystem.Messaging.UnitTests\PetrofexSystem.Messaging.UnitTests.csproj", "{039AFC86-8217-422F-9460-9A20CBB46E11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.TestServer", "PetrofexSystem.TestServer\PetrofexSystem.TestServer.csproj", "{53DC1978-9FA8-4A8D-A741-74271AC14159}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Server.Application", "PetrofexSystem.TestServer\PetrofexSystem.Server.Application.csproj", "{53DC1978-9FA8-4A8D-A741-74271AC14159}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetrofexSystem.Messaging.TestClient", "PetrofexSystem.Messaging.TestClient\PetrofexSystem.Messaging.TestClient.csproj", "{02BF421F-ED06-4418-9C85-C1287EC08BA3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Db", "Db", "{E8513E58-E6D9-479B-A0A9-AA0D7CA9A34F}"
+	ProjectSection(SolutionItems) = preProject
+		payments.db = payments.db
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
