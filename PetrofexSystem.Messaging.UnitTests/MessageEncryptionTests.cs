@@ -25,5 +25,21 @@ namespace PetrofexSystem.Messaging.UnitTests
             Assert.AreNotEqual(encrypted, decrypted);
             Assert.AreEqual(message, decrypted);
         }
+
+        [TestMethod]
+        public void EncryptBytes_CalledWithValidKey_CanBeDecryptedUsingSameKey()
+        {
+            var cryptoServiceProvider = new DESCryptoServiceProvider();
+            var bytes = new byte[] {2, 4, 6, 0, 1};
+            var key = cryptoServiceProvider.Key;
+
+            var messageEncryption = new MessageEncryption();
+            var encrypted = messageEncryption.EncryptBytes(bytes, key);
+            var decrypted = messageEncryption.DecryptBytes(encrypted, key);
+
+            Assert.IsFalse(bytes.SequenceEqual(encrypted));
+            Assert.IsFalse(encrypted.SequenceEqual(decrypted));
+            Assert.IsTrue(bytes.SequenceEqual(decrypted));
+        }
     }
 }

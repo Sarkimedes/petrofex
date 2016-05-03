@@ -28,8 +28,9 @@ namespace PetrofexSystem.Messaging
             var messageType = (byte) this.MessageType;
             var length = Convert.ToInt16(this.Payload.Length);
             // Convert length to bytes
-            var lengthBytes = BitConverter.GetBytes(length);
-
+            var lengthBytes = BitConverter.IsLittleEndian
+                ? BitConverter.GetBytes(length)
+                : BitConverter.GetBytes(length).Reverse().ToArray();
 
             return start.Concat(new[] {messageType}).Concat(lengthBytes).Concat(this.Payload).ToArray();
         }

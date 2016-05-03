@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -69,6 +71,25 @@ namespace PetrofexSystem.Messaging.UnitTests
             var bytes = message.ToByteArray();
 
             Assert.IsTrue(payload.SequenceEqual(bytes.Skip(6).ToArray()));
+        }
+
+        [TestMethod]
+        public void Test1()
+        {
+            var client = new TcpClient();
+            var wrapper = new ClientWrapper(client);
+
+            Assert.IsTrue(client == wrapper.Client);
+        }
+
+        public class ClientWrapper
+        {
+            public ClientWrapper(TcpClient client)
+            {
+                this.Client = client;
+            }
+
+            public TcpClient Client { get; private set; }
         }
     }
 }

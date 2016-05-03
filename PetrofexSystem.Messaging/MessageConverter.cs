@@ -20,9 +20,12 @@ namespace PetrofexSystem.Messaging
             {
                 messageType = MessageType.Error;
             }
-           
+            var lengthBytes = trimmedMessage.Skip(1).Take(2).ToArray();
+            var bodyLength = BitConverter.IsLittleEndian
+                ? BitConverter.ToInt16(lengthBytes, 0)
+                : BitConverter.ToInt16(lengthBytes.Reverse().ToArray(), 0);
             // Message body is the message with headers trimmed off
-            var messageBody = trimmedMessage.Skip(3).ToArray();
+            var messageBody = trimmedMessage.Skip(3).Take(bodyLength).ToArray();
             return new Message(messageType, messageBody);
         }
 

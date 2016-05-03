@@ -14,47 +14,15 @@ namespace PetrofexSystem.Messaging.TestClient
         static void Main(string[] args)
         {
             ConsoleKeyInfo key;
+            Console.WriteLine("Client");
             do
             {
                 key = Console.ReadKey();
-                var message = new Message(MessageType.Hello, new byte[0]);
-                var client = new TcpMessagingClient(IPAddress.Loopback.ToString(), 5000);
-                client.SendMessage(message, Console.WriteLine);
-                //var client = new TcpClient(IPAddress.Loopback.ToString(), 5000);
-                //var stream = client.GetStream();
-
-                //;
-                //stream.Write(message.ToByteArray(), 0, message.ToByteArray().Length);
-
-                //byte[] buffer = new byte[1024];
-                //client.Client.BeginReceive(buffer, 0, 1024, SocketFlags.None, (result =>
-                //{
-                //    var socket = (Socket)result.AsyncState;
-                //    socket.EndReceive(result);
-                //    Console.WriteLine("Received data");
-                //    stream.Close();
-                //}), client.Client);
+                var client = new PumpMessagingClient("Test");
+                Console.WriteLine("Attempting to connect");
+                client.Connect(_ => Console.WriteLine("Successfully connected"));
 
             } while (key.Key != ConsoleKey.Escape);
-        }
-
-        private static void SendData(Message message, Action<Message> callback)
-        {
-            var client = new TcpClient(IPAddress.Loopback.ToString(), 5000);
-            var stream = client.GetStream();
-            stream.Write(message.ToByteArray(), 0, message.ToByteArray().Length);
-
-            var buffer = new byte[1024];
-            client.Client.BeginReceive(buffer, 0, 1024, SocketFlags.None, (result =>
-            {
-                var socket = (Socket)result.AsyncState;
-                var read = socket.EndReceive(result);
-                if (read > 0)
-                {
-                    var data = new MessageConverter().FromByteArray(buffer.Take(read).ToArray());
-                    callback(data);
-                }
-            }), client.Client);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -13,6 +14,7 @@ namespace PetrofexSystem.TestServer
     class Program
     {
         private static readonly ManualResetEvent TcpClientConnected = new ManualResetEvent(false);
+        private static readonly ServerMessageHandler Handler = new ServerMessageHandler();
         static void Main(string[] args)
         {
             var listener = new TcpListener(IPAddress.Loopback, 5000);
@@ -31,18 +33,24 @@ namespace PetrofexSystem.TestServer
         {
             var tcpListener = (TcpListener)result.AsyncState;
             var client = tcpListener.EndAcceptTcpClient(result);
-            using (var stream = client.GetStream())
-            {
-                var reader = new StreamReader(client.GetStream());
+            RespondToMessage(client);
+            TcpClientConnected.Set();
+        }
 
-                var buffer = new char[1024];
-                reader.Read(buffer, 0, 1024);
-                var messageConverter = new MessageConverter();
-                Console.WriteLine(messageConverter.FromByteArray(Encoding.UTF8.GetBytes(buffer)).ToString());
-                var messageBytes = new Message(MessageType.PubKey, new byte[] {1, 2, 3, 4, 5}).ToByteArray();
-                stream.Write(messageBytes, 0, messageBytes.Length);
-                reader.Close();
-                TcpClientConnected.Set();
+        private static void RespondToMessage(TcpClient client)
+        {
+            var buffer = new byte[65535];
+            var stream = client.GetStream();
+            stream.Read(buffer, 0, buffer.Length);
+            var messageConverter = new MessageConverter();
+            var message = messageConverter.FromByteArray(buffer);
+            Handler.RespondToMessage(message, client);
+            var timeout = new TimeSpan(0, 0, 2, 0);
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            if (message.MessageType != MessageType.Connected)
+            {
+                RespondToMessage(client);
             }
         }
     }
