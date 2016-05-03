@@ -18,7 +18,8 @@ namespace PetrofexSystem.Messaging.TestClient
             {
                 key = Console.ReadKey();
                 var message = new Message(MessageType.Hello, new byte[0]);
-                SendData(message, null);
+                var client = new TcpMessagingClient(IPAddress.Loopback.ToString(), 5000);
+                client.SendMessage(message, Console.WriteLine);
                 //var client = new TcpClient(IPAddress.Loopback.ToString(), 5000);
                 //var stream = client.GetStream();
 
@@ -51,7 +52,7 @@ namespace PetrofexSystem.Messaging.TestClient
                 if (read > 0)
                 {
                     var data = new MessageConverter().FromByteArray(buffer.Take(read).ToArray());
-                    Console.WriteLine(data);
+                    callback(data);
                 }
             }), client.Client);
         }

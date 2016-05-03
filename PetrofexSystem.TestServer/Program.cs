@@ -12,18 +12,18 @@ namespace PetrofexSystem.TestServer
 {
     class Program
     {
-        private static ManualResetEvent tcpClientConnected = new ManualResetEvent(false);
+        private static readonly ManualResetEvent TcpClientConnected = new ManualResetEvent(false);
         static void Main(string[] args)
         {
             var listener = new TcpListener(IPAddress.Loopback, 5000);
             listener.Start();
             while (true)
             {
-                tcpClientConnected.Reset();
+                TcpClientConnected.Reset();
 
                 listener.BeginAcceptTcpClient(AcceptSocket, listener);
 
-                tcpClientConnected.WaitOne();
+                TcpClientConnected.WaitOne();
             }
         }
 
@@ -42,7 +42,7 @@ namespace PetrofexSystem.TestServer
                 var messageBytes = new Message(MessageType.PubKey, new byte[] {1, 2, 3, 4, 5}).ToByteArray();
                 stream.Write(messageBytes, 0, messageBytes.Length);
                 reader.Close();
-                tcpClientConnected.Set();
+                TcpClientConnected.Set();
             }
         }
     }
