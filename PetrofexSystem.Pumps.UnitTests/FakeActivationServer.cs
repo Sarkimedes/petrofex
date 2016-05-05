@@ -29,11 +29,13 @@ namespace PetrofexSystem.Pumps.UnitTests
         public void RequestActivation(string pumpId, Action successCallback)
         {
             this.ActivationRequested = true;
+            if (successCallback != null) successCallback();
         }
 
         public void RequestDeactivation(string pumpId, Action successCallback)
         {
             this.PumpingFinished = true;
+            if (successCallback != null) successCallback();
         }
     }
 }

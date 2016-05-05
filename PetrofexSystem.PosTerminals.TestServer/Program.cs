@@ -1,33 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using PetrofexSystem.Messaging;
-using PetrofexSystem.PosTerminals;
-using PetrofexSystem.Server;
 
-namespace PetrofexSystem.TestServer
+namespace PetrofexSystem.PosTerminals.TestServer
 {
     class Program
     {
         private static readonly ManualResetEvent TcpClientConnected = new ManualResetEvent(false);
-        private static readonly ServerMessageHandler Handler = new ServerMessageHandler();
+
         static void Main(string[] args)
         {
-
-            // Set up services
-            var pumpService = new PumpService(
-                new PumpFactory(
-                    new PaymentService(
-                        new SqlLitePaymentDatabase())));
-            Handler.PumpActivated += pumpService.HandleActivationRequest;
-            Handler.PumpDeactivated += pumpService.HandleDeactivationRequest;
-            Handler.PumpProgress += pumpService.HandlePumpProgress;
 
             var listener = new TcpListener(IPAddress.Loopback, 5000);
             listener.Start();
@@ -56,7 +44,6 @@ namespace PetrofexSystem.TestServer
             stream.Read(buffer, 0, buffer.Length);
             var messageConverter = new MessageConverter();
             var message = messageConverter.FromByteArray(buffer);
-            Handler.RespondToMessage(message, client);
             var timeout = new TimeSpan(0, 0, 2, 0);
             var stopwatch = new Stopwatch();
             stopwatch.Start();

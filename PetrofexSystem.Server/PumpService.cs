@@ -26,7 +26,7 @@ namespace PetrofexSystem.Server
             var pump = this._factory.GetPumpById(pumpId);
             if (pump != null)
             {
-                pump.Activate();
+                pump.RequestActivation();
             }
         }
 

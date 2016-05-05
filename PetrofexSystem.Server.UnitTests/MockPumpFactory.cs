@@ -16,7 +16,7 @@ namespace PetrofexSystem.PosTerminals.UnitTests
 
         public Pump GetPumpById(string id)
         {
-            return this.AddedPump ?? new Pump(id, new FakePaymentServer(), new FakeStateManager(), this);
+            return this.AddedPump ?? new Pump(id, new FakePaymentServer(), this);
         }
     }
 }
