@@ -25,11 +25,16 @@ namespace PetrofexSystem.Messaging
                 return newConnection;
             }
             return connection;
-        }
+        } 
 
         public Connection GetConnection(TcpClient client)
         {
             return this._connections.FirstOrDefault(c => c.Endpoint.Equals(client.Client.LocalEndPoint));
+        }
+
+        public Connection GetConnection(string clientId)
+        {
+            return this._connections.FirstOrDefault(c => c.ClientId == clientId);
         }
     }
 }

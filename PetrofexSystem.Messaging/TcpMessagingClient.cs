@@ -40,6 +40,22 @@ namespace PetrofexSystem.Messaging
             }), this._client.Client);
         }
 
+        public void ReceiveMessage(Action<Message> onReceiveCallback)
+        {
+            const int bufferSize = 65535;
+            var buffer = new byte[bufferSize];
+            this._client.Client.BeginReceive(buffer, 0, bufferSize, SocketFlags.None, (result =>
+            {
+                var socket = (Socket)result.AsyncState;
+                var read = socket.EndReceive(result);
+                if (read > 0)
+                {
+                    var data = new MessageConverter().FromByteArray(buffer.Take(read).ToArray());
+                    onReceiveCallback(data);
+                }
+            }), this._client.Client);
+        }
+
         private static string WriteByteArray(byte[] bytes)
         {
             var sb = new StringBuilder();

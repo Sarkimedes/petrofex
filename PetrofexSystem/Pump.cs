@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PetrofexSystem.Common;
+using PetrofexSystem.Messaging;
 using PetrofexSystem.Server;
 using PumpLibrary;
 
@@ -27,6 +28,7 @@ namespace PetrofexSystem
             ICustomerGenerator customerGenerator,
             IFuelPricesServer fuelPricesServer,
             ITransactionServer transactionServer, 
+            IMessagingClient client, 
             string id)
         {
             this._pumpActivationServer = pumpActivationServer;
@@ -38,6 +40,8 @@ namespace PetrofexSystem
             this._customerGenerator.CustomerReady += CustomerGeneratorOnCustomerReady;
             this._customerGenerator.PumpProgress += CustomerGeneratorOnPumpProgress;
             this._customerGenerator.PumpingFinished += CustomerGeneratorOnPumpingFinished;
+
+            client.Connect(message => { });
         }
 
         public void Activate()
@@ -58,7 +62,7 @@ namespace PetrofexSystem
                 throw new ArgumentNullException("customerReadyEventArgs");
             }
             
-            this._pumpActivationServer.RequestActivation(this.PumpId);
+            this._pumpActivationServer.RequestActivation(this.PumpId, this.Activate);
             this.CurrentTransaction = new Transaction()
             {
                 PumpId = this.PumpId,
@@ -94,8 +98,7 @@ namespace PetrofexSystem
 
         private void CustomerGeneratorOnPumpingFinished(object sender, EventArgs eventArgs)
         {
-            this._pumpActivationServer.RequestDeactivation(this.PumpId);
-            IsActive = false;
+            this._pumpActivationServer.RequestDeactivation(this.PumpId, () => this.IsActive = false);
         }
     }
 }

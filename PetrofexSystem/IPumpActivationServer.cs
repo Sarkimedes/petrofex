@@ -1,4 +1,6 @@
-﻿namespace PetrofexSystem.Server
+﻿using System;
+
+namespace PetrofexSystem.Server
 {
     /// <summary>
     /// Represents the server used to activate pumps
@@ -9,12 +11,12 @@
         /// Requests that the pump with the given ID is activated.
         /// </summary>
         /// <param name="pumpId">The pump identifier.</param>
-        void RequestActivation(string pumpId);
+        void RequestActivation(string pumpId, Action successCallback);
 
         /// <summary>
         /// Requests that the pump with the given ID is deactivated.
         /// </summary>
         /// <param name="pumpId">The pump identifier.</param>
-        void RequestDeactivation(string pumpId);
+        void RequestDeactivation(string pumpId, Action successCallback);
     }
 }

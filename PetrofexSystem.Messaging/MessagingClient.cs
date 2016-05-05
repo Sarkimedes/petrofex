@@ -14,13 +14,15 @@ using PetrofexSystem.Messaging;
 
 namespace PetrofexSystem
 {
-    public class PumpMessagingClient : IMessagingClient
+    public class MessagingClient : IMessagingClient
     {
         private readonly string _id;
         private readonly TcpMessagingClient _client;
         private byte[] _sharedKey;
 
-        public PumpMessagingClient(string id)
+        public byte[] SharedKey { get { return this._sharedKey; } }
+
+        public MessagingClient(string id)
         {
             this._id = id;
             this._client = new TcpMessagingClient(IPAddress.Loopback.ToString(), 5000);
@@ -57,6 +59,17 @@ namespace PetrofexSystem
             var encryptor = new MessageEncryption();
             var encrypted = encryptor.EncryptBytes(body, this._sharedKey);
             this._client.SendMessage(new Message(message.MessageType, encrypted), onCompleteCallback);
+        }
+
+        public void ListenForEncryptedMessage(Action<Message> onReceiveCallback)
+        {
+            this._client.ReceiveMessage(message =>
+            {
+                var body = message.Payload;
+                var decryptor = new MessageEncryption();
+                var decrypted = decryptor.DecryptBytes(body, this._sharedKey);
+                onReceiveCallback(new Message(message.MessageType, decrypted));
+            });
         }
 
         public void Disconnect(Action<Message> onCompleteCallback)

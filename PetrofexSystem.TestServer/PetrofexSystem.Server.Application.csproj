@@ -45,6 +45,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PetrofexSystem.Common\PetrofexSystem.Common.csproj">
+      <Project>{018ace40-f7e6-4c36-a76a-adc790c1a009}</Project>
+      <Name>PetrofexSystem.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PetrofexSystem.Messaging\PetrofexSystem.Messaging.csproj">
       <Project>{B460AB33-5FD3-4C95-B000-7BD8D0E1A4ED}</Project>
       <Name>PetrofexSystem.Messaging</Name>

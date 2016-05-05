@@ -58,6 +58,10 @@
       <Project>{018ACE40-F7E6-4C36-A76A-ADC790C1A009}</Project>
       <Name>PetrofexSystem.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PetrofexSystem.Messaging\PetrofexSystem.Messaging.csproj">
+      <Project>{b460ab33-5fd3-4c95-b000-7bd8d0e1a4ed}</Project>
+      <Name>PetrofexSystem.Messaging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PetrofexSystem.Server\PetrofexSystem.Server.csproj">
       <Project>{230f1ac3-a1b2-4042-aeaa-88653fd48a0f}</Project>
       <Name>PetrofexSystem.Server</Name>

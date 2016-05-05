@@ -43,6 +43,7 @@ namespace PetrofexSystem.PosTerminals
         public void HandlePumpProgress(Transaction transaction)
         {
             this.CurrentTransaction = transaction;
+            PosTerminalService.Instance.HandlePumpProgress(transaction);
             this._stateManager.SetState(PumpState.Active);
         }
 

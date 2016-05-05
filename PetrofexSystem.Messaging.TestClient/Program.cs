@@ -18,7 +18,7 @@ namespace PetrofexSystem.Messaging.TestClient
             do
             {
                 key = Console.ReadKey();
-                var client = new PumpMessagingClient("Test");
+                var client = new MessagingClient("Test");
                 Console.WriteLine("Attempting to connect");
                 client.Connect(_ =>
                 {

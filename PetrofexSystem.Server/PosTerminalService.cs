@@ -1,28 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using PetrofexSystem.Common;
 
 namespace PetrofexSystem.PosTerminals
 {
     public class PosTerminalService
     {
-        private IPumpFactory _pumpFactory;
+        private static PosTerminalService _instance = new PosTerminalService();
 
-        public PosTerminalService(IPumpFactory factory)
-        {
-            this._pumpFactory = factory;
-        }
+        public static PosTerminalService Instance { get { return _instance; } }
 
-        public void HandlePumpActivationRequest(string id)
-        {
-            var pump = this._pumpFactory.GetPumpById(id);
-            pump.Activate();
-        }
+        private PosTerminalService() { }
 
-        public void HandlePumpDeactivationRequest(string id)
+
+
+        public void HandlePumpProgress(Transaction transaction)
         {
-            this._pumpFactory.GetPumpById(id).Deactivate();
+            
         }
     }
 }

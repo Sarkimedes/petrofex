@@ -21,7 +21,7 @@ namespace PetrofexSystem.Pumps.TestApp
             this._knownPumps.Add(pump);
         }
 
-        public void RequestActivation(string pumpId)
+        public void RequestActivation(string pumpId, Action successCallback)
         {            
             Console.WriteLine("Requested activation for pump ID: {0}", pumpId);
             var matchingPumps = this._knownPumps.Where(x => string.Equals(x.PumpId, pumpId, StringComparison.InvariantCulture));
@@ -32,7 +32,7 @@ namespace PetrofexSystem.Pumps.TestApp
             }
         }
 
-        public void RequestDeactivation(string pumpId)
+        public void RequestDeactivation(string pumpId, Action successCallback)
         {
             Console.WriteLine("Requested deactivation for pump ID: {0}", pumpId);
             var matchingPumps =

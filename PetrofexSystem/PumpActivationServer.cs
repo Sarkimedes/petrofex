@@ -7,7 +7,7 @@ using PetrofexSystem.Server;
 
 namespace PetrofexSystem
 {
-    class PumpActivationServer : IPumpActivationServer
+    public class PumpActivationServer : IPumpActivationServer
     {
         private readonly IMessagingClient _client;
         public PumpActivationServer(IMessagingClient client)
@@ -15,21 +15,16 @@ namespace PetrofexSystem
             this._client = client;
         }
 
-        public void RequestActivation(string pumpId)
+        public void RequestActivation(string pumpId, Action successCallback)
         {
             var message = new Message(MessageType.ActivationRequest, Encoding.UTF8.GetBytes(pumpId));
-            SendMessage(message);
+            this._client.SendMessageEncrypted(message, m => { successCallback(); });
         }
 
-        public void RequestDeactivation(string pumpId)
+        public void RequestDeactivation(string pumpId, Action successCallback)
         {
             var message = new Message(MessageType.DeactivationRequest, Encoding.UTF8.GetBytes(pumpId));
-            SendMessage(message);
-        }
-
-        private void SendMessage(Message message)
-        {
-            this._client.SendMessageEncrypted(message, m => { });
+            this._client.SendMessageEncrypted(message, m => { successCallback(); });
         }
     }
 }

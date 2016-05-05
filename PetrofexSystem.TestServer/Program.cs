@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using PetrofexSystem.Messaging;
+using PetrofexSystem.PosTerminals;
 using PetrofexSystem.Server;
 
 namespace PetrofexSystem.TestServer
@@ -20,7 +21,13 @@ namespace PetrofexSystem.TestServer
         {
 
             // Set up services
-
+            var pumpService = new PumpService(
+                new PumpFactory(
+                    new PaymentService(
+                        new SqlLitePaymentDatabase()),new PumpStateManager()));
+            Handler.PumpActivated += pumpService.HandleActivationRequest;
+            Handler.PumpDeactivated += pumpService.HandleDeactivationRequest;
+            Handler.PumpProgress += pumpService.HandlePumpProgress;
 
             var listener = new TcpListener(IPAddress.Loopback, 5000);
             listener.Start();

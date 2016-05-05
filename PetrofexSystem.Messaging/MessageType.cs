@@ -12,7 +12,11 @@
         Ack = 16,
         ActivationRequest = 17,
         DeactivationRequest = 18,
-        Transaction = 19
+        Transaction = 19,
+        Activate = 20,
+        Deactivate = 21,
+        SendPayment = 22,
+        PumpActivated = 23
     }
 
 }
