@@ -25,5 +25,15 @@ namespace PetrofexSystem.Pumps.UnitTests
         {
             this.PumpingFinished = true;
         }
+
+        public void RequestActivation(string pumpId, Action successCallback)
+        {
+            this.ActivationRequested = true;
+        }
+
+        public void RequestDeactivation(string pumpId, Action successCallback)
+        {
+            this.PumpingFinished = true;
+        }
     }
 }

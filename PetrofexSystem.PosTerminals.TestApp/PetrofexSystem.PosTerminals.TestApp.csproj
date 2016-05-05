@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{53DC1978-9FA8-4A8D-A741-74271AC14159}</ProjectGuid>
+    <ProjectGuid>{170D78AD-C344-404F-B266-1CEDA895F532}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PetrofexSystem.TestServer</RootNamespace>
-    <AssemblyName>PetrofexSystem.TestServer</AssemblyName>
+    <RootNamespace>PetrofexSystem.PosTerminals.TestApp</RootNamespace>
+    <AssemblyName>PetrofexSystem.PosTerminals.TestApp</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,25 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite">
-      <HintPath>..\packages\System.Data.SQLite.Core.1.0.101.0\lib\net40\System.Data.SQLite.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SQLite.EF6">
-      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.101.0\lib\net40\System.Data.SQLite.EF6.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SQLite.Linq">
-      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.101.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,25 +45,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PetrofexSystem.Common\PetrofexSystem.Common.csproj">
-      <Project>{018ace40-f7e6-4c36-a76a-adc790c1a009}</Project>
-      <Name>PetrofexSystem.Common</Name>
+    <ProjectReference Include="..\PetrofexSystem.PosTerminals.UI\PetrofexSystem.PosTerminals.UI.csproj">
+      <Project>{cde00af9-652a-498f-8d50-d94f5f482003}</Project>
+      <Name>PetrofexSystem.PosTerminals.UI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PetrofexSystem.Messaging\PetrofexSystem.Messaging.csproj">
-      <Project>{B460AB33-5FD3-4C95-B000-7BD8D0E1A4ED}</Project>
-      <Name>PetrofexSystem.Messaging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PetrofexSystem.Server\PetrofexSystem.Server.csproj">
-      <Project>{230f1ac3-a1b2-4042-aeaa-88653fd48a0f}</Project>
-      <Name>PetrofexSystem.Server</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\System.Data.SQLite.Core.1.0.101.0\build\net40\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.101.0\build\net40\System.Data.SQLite.Core.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

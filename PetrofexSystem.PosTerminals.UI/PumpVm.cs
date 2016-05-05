@@ -10,8 +10,7 @@ using PumpLibrary;
 
 namespace PetrofexSystem.PosTerminals.UI
 {
-
-    class PumpVm
+    public class PumpVm
     {
         public string Id { get; set; }
         public bool IsTransactionPending { get; set; }

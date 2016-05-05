@@ -78,7 +78,7 @@ namespace PetrofexSystem.Messaging
                     this._connection.SendEncryptedMessage(new Message(MessageType.Ack, new byte[0]), this.HandleMessage);
                     break;
                 default:
-                    
+                    break;
             }
         }
     }

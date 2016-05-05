@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,7 +19,7 @@ namespace PetrofexSystem.Pumps.UnitTests
             var server = new FakeActivationServer();
             var fuelPricesServer = new FakePriceServer();
             var transactionServer = new FakeTransactionServer();
-            var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer, Guid.NewGuid().ToString());
+            var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer, new FakeMessagingClient(), Guid.NewGuid().ToString());
 
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
 
@@ -33,7 +34,7 @@ namespace PetrofexSystem.Pumps.UnitTests
             var server = new FakeActivationServer();
             var fuelPricesServer = new FakePriceServer();
             var transactionServer = new FakeTransactionServer();
-            var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer, Guid.NewGuid().ToString());
+            var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer, new FakeMessagingClient(), Guid.NewGuid().ToString());
 
             customerGenerator.InvokeCustomerReady(null);
         }
@@ -45,7 +46,7 @@ namespace PetrofexSystem.Pumps.UnitTests
             var server = new FakeActivationServer();
             var fuelPricesServer = new FakePriceServer();
             var transactionServer = new FakeTransactionServer();
-            var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer, Guid.NewGuid().ToString());
+            var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer, new FakeMessagingClient(), Guid.NewGuid().ToString());
 
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
             pump.Activate();
@@ -60,7 +61,7 @@ namespace PetrofexSystem.Pumps.UnitTests
             var server = new FakeActivationServer();
             var fuelPricesServer = new FakePriceServer();
             var transactionServer = new FakeTransactionServer();
-            var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer, Guid.NewGuid().ToString());
+            var pump = new Pump(server, customerGenerator, fuelPricesServer, transactionServer, new FakeMessagingClient(), Guid.NewGuid().ToString());
 
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Diesel));
             pump.Activate();
@@ -76,7 +77,7 @@ namespace PetrofexSystem.Pumps.UnitTests
             var server = new FakeActivationServer();
             var priceServer = new FakePriceServer();
             var transactionServer = new FakeTransactionServer();
-            var pump = new Pump(server, customerGenerator, priceServer, transactionServer, Guid.NewGuid().ToString());
+            var pump = new Pump(server, customerGenerator, priceServer, transactionServer, new FakeMessagingClient(), Guid.NewGuid().ToString());
 
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Hydrogen));
             pump.Activate();
@@ -99,7 +100,7 @@ namespace PetrofexSystem.Pumps.UnitTests
             var server = new FakeActivationServer();
             var priceServer = new FakePriceServer();
             var transactionServer = new FakeTransactionServer();
-            var pump = new Pump(server, customerGenerator, priceServer, transactionServer, Guid.NewGuid().ToString());
+            var pump = new Pump(server, customerGenerator, priceServer, transactionServer, new FakeMessagingClient(), Guid.NewGuid().ToString());
 
             customerGenerator.InvokeCustomerReady(new CustomerReadyEventArgs(FuelType.Unleaded));
             pump.Activate();
@@ -179,7 +180,7 @@ namespace PetrofexSystem.Pumps.UnitTests
             var fakePriceServer = pricesServer ?? new FakePriceServer();
             var fakeTransactionServer = transactionServer ?? new FakeTransactionServer();
 
-            return new Pump(fakeActivationServer, fakeCustomerGenerator, fakePriceServer, fakeTransactionServer, Guid.NewGuid().ToString());
+            return new Pump(fakeActivationServer, fakeCustomerGenerator, fakePriceServer, fakeTransactionServer, new FakeMessagingClient(), Guid.NewGuid().ToString());
         }
 
     }

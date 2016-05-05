@@ -12,9 +12,10 @@ namespace PetrofexSystem.PosTerminals.UnitTests
     {
         public Transaction LastTransaction { get; private set; }
 
-        public void SendForProcessing(Transaction transaction)
+        public void SendForProcessing(Transaction transaction, Action callback = null)
         {
             this.LastTransaction = transaction;
+            if (callback != null) callback();
         }
     }
 }

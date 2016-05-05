@@ -14,13 +14,15 @@ namespace PetrofexSystem.PosTerminals
     {
         private readonly IStateManager _stateManager;
         private readonly IPaymentServer _paymentServer;
+        private PosTerminalService _posTerminalService;
 
-        public Pump(string id, IPaymentServer paymentServer, IStateManager stateManager)
+        public Pump(string id, IPaymentServer paymentServer, IStateManager stateManager, IPumpFactory pumpFactory)
         {
             this.Id = id;
             this._paymentServer = paymentServer;
             this._stateManager = stateManager;
             this._stateManager.SetState(PumpState.CustomerWaiting);
+            this._posTerminalService = new PosTerminalService(pumpFactory);
         }
 
         public string Id { get; private set; }
@@ -43,19 +45,20 @@ namespace PetrofexSystem.PosTerminals
         public void HandlePumpProgress(Transaction transaction)
         {
             this.CurrentTransaction = transaction;
-            PosTerminalService.Instance.HandlePumpProgress(transaction);
+            this._posTerminalService.HandlePumpProgress(transaction);
             this._stateManager.SetState(PumpState.Active);
         }
 
         public void Deactivate()
         {
             this.TransactionPaid = false;
+            this._posTerminalService.HandlePaymentAwaiting(this.CurrentTransaction);
             this._stateManager.SetState(PumpState.AwaitingPayment);
         }
 
         public void PayCurrentTransaction()
         {
-            this._paymentServer.SendForProcessing(this.CurrentTransaction);
+            this._paymentServer.SendForProcessing(this.CurrentTransaction, this.HandlePaymentAcknowledged);
             this._stateManager.SetState(PumpState.PaymentMade);
         }
 

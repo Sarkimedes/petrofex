@@ -72,7 +72,7 @@
     <Compile Include="PaymentService.cs" />
     <Compile Include="PosTerminalService.cs" />
     <Compile Include="PriceCache.cs" />
-    <Compile Include="Pump.cs" />
+    <Compile Include="ServerPump.cs" />
     <Compile Include="PumpFactory.cs" />
     <Compile Include="PumpState.cs" />
     <Compile Include="PumpStateManager.cs" />

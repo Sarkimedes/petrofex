@@ -26,7 +26,7 @@ namespace PetrofexSystem.Server.UnitTests
                 TotalAmount = 5
             };
 
-            paymentService.SendForProcessing(transaction);
+            paymentService.SendForProcessing(transaction, () => { });
 
             Assert.AreEqual(transaction, db.LastTransaction);
         }

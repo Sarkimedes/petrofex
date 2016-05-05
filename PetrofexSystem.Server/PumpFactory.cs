@@ -10,6 +10,8 @@ namespace PetrofexSystem.Server
         private readonly IPaymentServer _paymentServer;
         private readonly IStateManager _stateManager;
 
+
+
         public PumpFactory(IPaymentServer paymentServer, IStateManager stateManager)
         {
             this._pumps = new List<Pump>();
@@ -25,7 +27,7 @@ namespace PetrofexSystem.Server
                 return pump;
             }
 
-            var addedPump = new Pump(pumpId, this._paymentServer, this._stateManager);
+            var addedPump = new Pump(pumpId, this._paymentServer, this._stateManager, this);
             this._pumps.Add(addedPump);
             return addedPump;
         }

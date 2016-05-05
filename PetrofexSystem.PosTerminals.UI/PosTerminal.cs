@@ -9,7 +9,7 @@ using PetrofexSystem.Messaging;
 
 namespace PetrofexSystem.PosTerminals.UI
 {
-    class PosTerminal
+    public class PosTerminal
     {
         private string _id;
         private MessagingClient _client;

@@ -22,7 +22,7 @@ namespace PetrofexSystem.Server
 
 
 
-        public void SendForProcessing(Transaction transaction)
+        public void SendForProcessing(Transaction transaction, Action onSuccess)
         {
             this._database.SaveTransaction(transaction);
         }

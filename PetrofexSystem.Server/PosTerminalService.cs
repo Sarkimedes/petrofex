@@ -9,17 +9,23 @@ namespace PetrofexSystem.PosTerminals
 {
     public class PosTerminalService
     {
-        private static PosTerminalService _instance = new PosTerminalService();
-
-        public static PosTerminalService Instance { get { return _instance; } }
-
-        private PosTerminalService() { }
+        private readonly IPumpFactory _factory;
 
 
+        public PosTerminalService(IPumpFactory factory)
+        {
+            this._factory = factory;
+        }
 
         public void HandlePumpProgress(Transaction transaction)
         {
             
+        }
+
+        internal void HandlePaymentAwaiting(Transaction transaction)
+        {
+            var pump = this._factory.GetPumpById(transaction.PumpId);
+            pump.PayCurrentTransaction();
         }
     }
 }
